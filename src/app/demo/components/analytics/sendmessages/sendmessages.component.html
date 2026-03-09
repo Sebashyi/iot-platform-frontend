@@ -1,0 +1,105 @@
+<div class="grid">
+    <div class="col-12">
+        <div class="card">
+            <h5 style="color: #005BA8; font-weight: bold;">Lista de Mensajes</h5>
+            <div class="col-12">
+                <div class="p-fluid p-formgrid grid">
+                    <div class="field col-12 md:col-4">
+                        <label for="startDate">Desde:</label>
+                        <p-calendar id="startDate" [(ngModel)]="startDate" dateFormat="yy-mm-dd"
+                            (ngModelChange)="updateTable()" placeholder="Seleccione una fecha" [maxDate]="endDate"
+                            [showButtonBar]="true">
+                        </p-calendar>
+                    </div>
+                    <div class="field col-12 md:col-4">
+                        <label for="endDate">Hasta:</label>
+                        <p-calendar id="endDate" [(ngModel)]="endDate" dateFormat="yy-mm-dd"
+                            (ngModelChange)="updateTable()" placeholder="Seleccione una fecha" [minDate]="startDate"
+                            [showButtonBar]="true">
+                        </p-calendar>
+                    </div>
+                    <div class="field col-12 md:col-2">
+                        <label for="searchButton" class="sr-only">Buscar</label>
+                        <button id="searchButton" pButton label="Buscar" class="mr-2" (click)="filterByDateRange()"></button>
+                    </div>
+                    <div class="field col-12 md:col-2">
+                        <label for="clearButton" class="sr-only">Limpiar filtros</label>
+                        <button id="clearButton" pButton label="Limpiar" class="p-button-secondary mr-2"
+                            (click)="clearFilters()"></button>
+                    </div>
+                </div>
+            </div>
+            <p-toast></p-toast>
+            <p-table #dt [value]="messages" [columns]="cols" responsiveLayout="scroll" [rows]="10" [loading]="loading"
+                [globalFilterFields]="['number', 'name', 'serialMeter', 'typeMessage', 'decoded_value', 'gateway', 'date']"
+                [paginator]="true" [rowsPerPageOptions]="[10,20,30]" [showCurrentPageReport]="true"
+                currentPageReportTemplate="Mostrando {first} a {last} de {totalRecords} entradas"
+                [(selection)]="selectedMessages" selectionMode="multiple" [rowHover]="true" dataKey="number">
+                <ng-template pTemplate="caption">
+                    <div class="flex flex-column md:flex-row md:justify-content-between md:align-items-center">
+                        <span class="block mt-2 md:mt-0 p-input-icon-left">
+                            <i class="pi pi-search"></i>
+                            <input pInputText type="text" (input)="onGlobalFilter(dt, $event)" placeholder="Buscar..."
+                                class="w-full sm:w-auto" />
+                        </span>
+                    </div>
+                </ng-template>
+
+                <ng-template pTemplate="header">
+                    <tr>
+                        <th pSortableColumn="number" scope="col">Código <p-sortIcon field="number"></p-sortIcon></th>
+                        <th pSortableColumn="typeMessage" scope="col">Tipo de Mensaje <p-sortIcon
+                                field="typeMessage"></p-sortIcon></th>
+                        <th pSortableColumn="decoded_value" scope="col">Serial <p-sortIcon
+                                field="decoded_value"></p-sortIcon></th>
+                        <th pSortableColumn="gateway" scope="col">GW <p-sortIcon field="gateway"></p-sortIcon></th>
+                        <th pSortableColumn="date" scope="col">Fecha y Hora <p-sortIcon field="date"></p-sortIcon></th>
+                        <th scope="col"></th>
+                    </tr>
+                </ng-template>
+
+                <ng-template pTemplate="body" let-message>
+                    <tr>
+                        <td style="width:14%; min-width:10rem;">
+                            <span class="p-column-title">Código</span>
+                            {{message.uniqueKey}}
+                        </td>
+                        <td style="width:14%; min-width:10rem;">
+                            <span class="p-column-title">Tipo de mensaje</span>
+                            {{message.typeMessage}}
+                        </td>
+                        <td style="width:14%; min-width:10rem;">
+                            <span class="p-column-title">Serial</span>
+                            {{message.serialMeter}}
+                        </td>
+                        <td style="width:14%; min-width:10rem;">
+                            <span class="p-column-title">GW</span>
+                            {{message.gws}}
+                        </td>
+                        <td style="width:14%; min-width:10rem;">
+                            <span class="p-column-title">Fecha y hora</span>
+                            {{this.dateFormatService.formatDate(message.createdAt)}}
+                        </td>
+                        <td>
+                            <div class="flex">
+                                <button pButton pRipple type="button" icon="pi pi-file-o"
+                                    class="p-button-rounded p-button-text" (click)="openDetail(message)"></button>
+                            </div>
+                        </td>
+                    </tr>
+                </ng-template>
+                <ng-template pTemplate="emptymessage">
+                    <tr>
+                        <td colspan="8" style="text-align: center; font-weight: bold; font-size: 1.2em; padding: 20px;">
+                            Mensajes no encontrados.</td>
+                    </tr>
+                </ng-template>
+                <ng-template pTemplate="loadingbody" style="display: flex; flex-direction: column; justify-content: center; align-items: center;">
+                    <tr>
+                        <td colspan="8" style="text-align: center; font-weight: bold; font-size: 1.2em; padding: 20px;">Cargando los datos de los Mensajes. Por favor espere.</td>
+                    </tr>
+                </ng-template>
+            </p-table>
+        </div>
+    </div>
+</div>

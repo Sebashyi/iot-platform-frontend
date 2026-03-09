@@ -1,0 +1,124 @@
+<div class="grid">
+    <div class="col-12">
+        <div class="card">
+            <h5 style="color: #005BA8; font-weight: bold;">Usuarios</h5>
+            <p-toast></p-toast>
+            <p-toolbar>
+                <ng-template pTemplate="left">
+                    <div class="my-2">
+                        <button pButton pRipple label="Agregar" icon="pi pi-plus" class="mr-2"
+                            (click)="openNew()"></button>
+                        <button pButton pRipple label="Eliminar" icon="pi pi-trash" class="p-button-danger"
+                            (click)="deleteSelectedUsers()"
+                            [disabled]="!selectedUsers || !selectedUsers.length"></button>
+                    </div>
+                </ng-template>
+                <ng-template pTemplate="right">
+                    <p-fileUpload mode="basic" accept="image/*" [maxFileSize]="1000000" label="Importar"
+                        chooseLabel="Importar" class="mr-2 inline-block"></p-fileUpload>
+                    <button pButton pRipple label="Exportar" icon="pi pi-upload" class="p-button-secondary"
+                        (click)="dt.exportCSV()"></button>
+                </ng-template>
+            </p-toolbar>
+        </div>
+    </div>
+    <div class="col-12">
+        <div class="card">
+            <p-table #dt [value]="users" [columns]="cols" responsiveLayout="scroll" [rows]="10"
+                [globalFilterFields]="['firstName', 'secondName', 'firstLastName', 'secondLastName', 'user.email', 'role', 'phoneNumber' , 'full_name', 'full_last_name', 'uniqueKey']"
+                [paginator]="true"
+                [rowsPerPageOptions]="[10,20,30]" [showCurrentPageReport]="true"
+                currentPageReportTemplate="Mostrando {first} a {last} de {totalRecords} entradas"
+                [(selection)]="selectedUsers" selectionMode="multiple" [rowHover]="true" dataKey="uniqueKey">
+                <ng-template pTemplate="caption">
+                    <div class="flex flex-column md:flex-row md:justify-content-between md:align-items-center">
+                        <h5 class="m-0">Administrar Usuarios</h5>
+                        <span class="block mt-2 md:mt-0 p-input-icon-left">
+                            <i class="pi pi-search"></i>
+                            <input pInputText type="text" (input)="onGlobalFilter(dt, $event)" placeholder="Buscar..."
+                                class="w-full sm:w-auto" />
+                        </span>
+                    </div>
+                </ng-template>
+
+                <ng-template pTemplate="header">
+                    <tr>
+                        <th style="width: 3rem">
+                            <p-tableHeaderCheckbox></p-tableHeaderCheckbox>
+                        </th>
+                        <th pSortableColumn="uniqueKey">Código <p-sortIcon field="uniqueKey"></p-sortIcon></th>
+                        <th pSortableColumn="firstName">Nombres <p-sortIcon field="firstName"></p-sortIcon></th>
+                        <th pSortableColumn="firstLastName">Apellidos <p-sortIcon field="firstLastName"></p-sortIcon></th>
+                        <th pSortableColumn="email">Correo <p-sortIcon field="email"></p-sortIcon></th>
+                        <th pSortableColumn="role">Rol <p-sortIcon field="role"></p-sortIcon></th>
+                        <th pSortableColumn="phoneNumber">Teléfono <p-sortIcon field="phoneNumber"></p-sortIcon></th>
+                        <th></th>
+                    </tr>
+                </ng-template>
+
+                <ng-template pTemplate="body" let-user>
+                    <tr>
+                        <td>
+                            <p-tableCheckbox [value]="user"></p-tableCheckbox>
+                        </td>
+                        <td style="width:14%; min-width:10rem;">
+                            <span class="p-column-title">Código</span>
+                            {{user.uniqueKey}}
+                        </td>
+                        <td style="width:14%; min-width:10rem;">
+                            <span class="p-column-title">Nombres</span>
+                            {{user.firstName + ' ' + user.secondName}}
+                        </td>
+                        <td style="width:14%; min-width:10rem;">
+                            <span class="p-column-title">Apellidos</span>
+                            {{user.firstLastName + ' ' + user.secondLastName}}
+                        </td>
+                        <td style="width:14%; min-width:10rem;">
+                            <span class="p-column-title">Correo</span>
+                            {{user.email}}
+                        </td>
+                        <td style="width:14%; min-width:10rem;">
+                            <span class="p-column-title">Rol</span>
+                            {{user.role}}
+                        </td>
+                        <td style="width:14%; min-width:10rem;">
+                            <span class="p-column-title">Teléfono</span>
+                            {{user.phoneNumber}}
+                        </td>
+                        <td>
+                            <div class="flex">
+                                <button pButton pRipple type="button" icon="pi pi-pencil"
+                                    class="p-button-rounded p-button-text" (click)="editCompany(company)"
+                                    (click)="openEdit(user)"></button>
+                            </div>
+                        </td>
+                    </tr>
+                </ng-template>
+                <ng-template pTemplate="emptymessage">
+                    <tr>
+                        <td colspan="8" style="text-align: center; font-weight: bold; font-size: 1.2em; padding: 20px;">
+                            Usuarios no encontrados.</td>
+                    </tr>
+                </ng-template>
+                <ng-template pTemplate="loadingbody">
+                    <tr>
+                        <td colspan="8">Cargando los datos de los Usuarios. Por favor espere.</td>
+                    </tr>
+                </ng-template>
+            </p-table>
+        </div>
+
+        <p-dialog [(visible)]="deleteUsersDialog" header="Confirmar" [modal]="true" [style]="{width:'450px'}">
+            <div class="flex align-items-center justify-content-center">
+                <i class="pi pi-exclamation-triangle mr-3" style="font-size: 2rem"></i>
+                <span>¿Está seguro de que desea eliminar los usuarios seleccionados?</span>
+            </div>
+            <ng-template pTemplate="footer">
+                <button pButton pRipple icon="pi pi-times" class="p-button-text" label="No"
+                    (click)="deleteUsersDialog = false"></button>
+                <button pButton pRipple icon="pi pi-check" class="p-button-text" label="Sí"
+                    (click)="confirmDeleteSelected()"></button>
+            </ng-template>
+        </p-dialog>
+    </div>
+</div>

@@ -1,0 +1,83 @@
+<div class="grid">
+    <div class="col-12">
+        <div class="card">
+            <h5 style="color: #005BA8; font-weight: bold;">Editar Usuario</h5>
+            <p-toast></p-toast>
+            <p-toolbar>
+                <div class="p-toolbar-group-left flex flex-wrap">
+                    <button pTooltip="Volver" pButton pRipple type="button" icon="pi pi-angle-left"
+                        class="p-button-rounded p-button-text p-button-plain mr-2" (click)="onGoBack()"></button>
+                </div>
+                <div class="p-toolbar-group-right">
+                    <button pButton type="button" label="Guardar" icon="pi pi-save" class="p-button-success mr-2"
+                        (click)="changeUserDialog = true"></button>
+                    <button pButton type="button" label="Restablecer" icon="pi pi-refresh" class="p-button-warning mr-2"
+                        (click)="onClear()"></button>
+                </div>
+            </p-toolbar>
+        </div>
+    </div>
+    <div class="col-12">
+        <div class="card">
+            <div class="p-fluid p-formgrid grid">
+                <div class="field col-12 md:col-4">
+                    <label htmlFor="firstName" class="input-labels">Nombres</label>
+                    <input pInputText id="firstName" [(ngModel)]="names" type="text"
+                        required />
+                </div>
+                <div class="field col-12 md:col-4">
+                    <label htmlFor="lastName" class="input-labels">Apellidos</label>
+                    <input pInputText id="lastName" [(ngModel)]="lastNames"
+                        type="text" required />
+                </div>
+                <div class="field col-12 md:col-4">
+                    <label htmlFor="email" class="input-labels">Correo</label>
+                    <input pInputText id="email" [(ngModel)]="user.email" type="email" required />
+                </div>
+            </div>
+            <div class="p-fluid p-formgrid grid">
+                <div class="field col-12 md:col-4">
+                    <label for="role" class="input-labels">Cargo</label>
+                    <p-dropdown [(ngModel)]="user.role" inputId="role" optionLabel="name" optionValue="code"
+                        [options]="dropdownItems" placeholder="Selecciona un Cargo" required>
+                        <ng-template pTemplate="selectedItem">
+                            <span *ngIf="user && user.role" [class]="user.role">{{user.role}}</span>
+                        </ng-template>
+                        <ng-template let-option pTemplate="item">
+                            <span [class]="option.code">{{option.name}}</span>
+                        </ng-template>
+                    </p-dropdown>
+                </div>
+                <div class="field col-12 md:col-4">
+                    <label htmlFor="phone" class="input-labels">Telefono</label>
+                    <input pInputText id="phone" [(ngModel)]="user.phoneNumber" type="text" required />
+                </div>
+            </div>
+            <div class="p-fluid p-formgrid grid">
+                <div class="field col-12 md:col-4">
+                    <label htmlFor="companies" class="input-labels">Empresa/s</label>
+                    <p-multiSelect [options]="companies" [(ngModel)]="selectedMulti" optionLabel="name"
+                        placeholder="Selecciona una Empresa/s" class="multiselect-custom" display="chip">
+                        <ng-template let-company pTemplate="item">
+                            <div class="flex align-items-center">
+                                <span class="ml-2">{{company.name}}</span>
+                            </div>
+                        </ng-template>
+                    </p-multiSelect>
+                </div>
+            </div>
+        </div>
+    </div>
+    <p-dialog [(visible)]="changeUserDialog" header="Confirmar" [modal]="true" [style]="{width:'450px'}">
+        <div class="flex align-items-center justify-content-center">
+            <i class="pi pi-exclamation-triangle mr-3" style="font-size: 2rem"></i>
+            <span>¿Está seguro de que desea modificar este Usuario?</span>
+        </div>
+        <ng-template pTemplate="footer">
+            <button pButton pRipple icon="pi pi-times" class="p-button-text" label="No"
+                (click)="changeUserDialog = false"></button>
+            <button pButton pRipple icon="pi pi-check" class="p-button-text" label="Sí"
+                (click)="onSave()"></button>
+        </ng-template>
+    </p-dialog>
+</div>

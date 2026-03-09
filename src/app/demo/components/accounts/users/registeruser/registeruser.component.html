@@ -1,0 +1,78 @@
+<div class="grid">
+    <div class="col-12">
+        <div class="card">
+            <h5 style="color: #005BA8; font-weight: bold;">Registrar Usuario</h5>
+            <p-toast></p-toast>
+            <p-toolbar>
+                <div class="p-toolbar-group-left flex flex-wrap">
+                    <button pTooltip="Volver" pButton pRipple type="button" icon="pi pi-angle-left"
+                        class="p-button-rounded p-button-text p-button-plain mr-2" (click)="onGoBack()"></button>
+                </div>
+                <div class="p-toolbar-group-right">
+                    <button pButton type="button" label="Guardar" icon="pi pi-save" class="p-button-success mr-2"
+                        (click)="createUserDialog = true"></button>
+                    <button pButton type="button" label="Limpiar" icon="pi pi-refresh" class="p-button-warning mr-2"
+                        (click)="onClear()"></button>
+                </div>
+            </p-toolbar>
+        </div>
+    </div>
+    <div class="col-12">
+        <div class="card">
+            <div class="p-fluid p-formgrid grid">
+                <div class="field col-12 md:col-4">
+                    <label htmlFor="firstName" class="input-labels">Nombres</label>
+                    <input pInputText id="firstName" [(ngModel)]="user.firstName" type="text" required placeholder="Ingrese nombres del usuario"/>
+                </div>
+                <div class="field col-12 md:col-4">
+                    <label htmlFor="lastName" class="input-labels">Apellidos</label>
+                    <input pInputText id="lastName" [(ngModel)]="user.firstLastName"  type="text" required placeholder="Ingrese apellidos del usuario"/>
+                </div>
+                <div class="field col-12 md:col-4">
+                    <label htmlFor="email" class="input-labels">Correo</label>
+                    <input pInputText id="email" [(ngModel)]="user.email" type="email" required placeholder="Ingrese el correo del usuario"/>
+                </div>
+            </div>
+            <div class="p-fluid p-formgrid grid">
+                <div class="field col-12 md:col-4">
+                    <label htmlFor="role" class="input-labels">Cargo</label>
+                    <p-dropdown placeholder="Selecciona un Cargo" [options]="dropdownItems" [(ngModel)]="selectedState" optionLabel="name"
+                        [(ngModel)]="user.role" required></p-dropdown>
+                </div>
+                <div class="field col-12 md:col-4">
+                    <label class="input-labels">Contraseña</label>
+                    <p-password id="password" [(ngModel)]="user.password" placeholder="Ingrese una contraseña" [toggleMask]="true" styleClass="mb-5 w-full" inputStyleClass="w-full p-3 md:w-30rem"></p-password>
+                </div>
+                <div class="field col-12 md:col-4">
+                    <label htmlFor="phone" class="input-labels">Telefono</label>
+                    <input pInputText id="phone" [(ngModel)]="user.phoneNumber" type="text" required placeholder="Ingrese un número de teléfono"/>
+                </div>
+            </div>
+            <div class="p-fluid p-formgrid grid">
+                <div class="field col-12 md:col-4">
+                    <label htmlFor="companies" class="input-labels">Empresa</label>
+                    <p-multiSelect [options]="companies" [(ngModel)]="selectedMulti" optionLabel="name"
+                        placeholder="Selecciona una Empresa/s" class="multiselect-custom" display="chip">
+                        <ng-template let-company pTemplate="item">
+                            <div class="flex align-items-center">
+                                <span class="ml-2">{{company.name}}</span>
+                            </div>
+                        </ng-template>
+                    </p-multiSelect>
+                </div>
+            </div>
+        </div>
+    </div>
+    <p-dialog [(visible)]="createUserDialog" header="Confirmar" [modal]="true" [style]="{width:'450px'}">
+        <div class="flex align-items-center justify-content-center">
+            <i class="pi pi-exclamation-triangle mr-3" style="font-size: 2rem"></i>
+            <span>¿Está seguro de que desea crear este Usuario?</span>
+        </div>
+        <ng-template pTemplate="footer">
+            <button pButton pRipple icon="pi pi-times" class="p-button-text" label="No"
+                (click)="createUserDialog = false"></button>
+            <button pButton pRipple icon="pi pi-check" class="p-button-text" label="Sí"
+                (click)="onSave()"></button>
+        </ng-template>
+    </p-dialog>
+</div>

@@ -1,0 +1,96 @@
+<div class="grid">
+    <div class="col-12">
+        <div class="card">
+            <h5 style="color: #005BA8; font-weight: bold;">Empresas</h5>
+            <p-toast></p-toast>
+            <p-toolbar>
+                <ng-template pTemplate="left">
+                    <div class="my-2">
+                        <button pButton pRipple label="Agregar" icon="pi pi-plus" class="mr-2"
+                            (click)="openNew()"></button>
+                        <button pButton pRipple label="Eliminar" icon="pi pi-trash" class="p-button-danger"
+                            (click)="deleteSelectedCompanies()" [disabled]="selectedCompanies.length === 0"></button>
+                    </div>
+                </ng-template>
+
+                <ng-template pTemplate="right">
+                    <p-fileUpload mode="basic" accept="image/*" [maxFileSize]="1000000" label="Import"
+                        chooseLabel="Importar" class="mr-2 inline-block"></p-fileUpload>
+                    <button pButton pRipple label="Exportar" icon="pi pi-upload" class="p-button-secondary"
+                        (click)="dt.exportCSV()"></button>
+                </ng-template>
+            </p-toolbar>
+        </div>
+    </div>
+    <div class="col-12">
+        <div class="card px-6 py-6">
+            <p-table #dt [value]="companies" [columns]="cols" responsiveLayout="scroll" [rows]="10" [paginator]="true"
+                [rowsPerPageOptions]="[5, 10, 20]" [(selection)]="selectedCompanies" selectionMode="multiple"
+                [rowHover]="true" dataKey="uniqueKey" [globalFilterFields]="['name', 'nickname', 'ruc', 'uniqueKey']">
+                <ng-template pTemplate="caption">
+                    <div class="flex flex-column md:flex-row md:justify-content-between md:align-items-center">
+                        <h5 class="m-0">Administrar Empresas</h5>
+                        <span class="block mt-2 md:mt-0 p-input-icon-left">
+                            <i class="pi pi-search"></i>
+                            <input pInputText type="text" (input)="onGlobalFilter(dt, $event)" placeholder="Buscar..."
+                                class="w-full sm:w-auto" />
+                        </span>
+                    </div>
+                </ng-template>
+                <ng-template pTemplate="header">
+                    <tr>
+                        <th style="width: 3rem" scope="col">
+                            <p-tableHeaderCheckbox></p-tableHeaderCheckbox>
+                        </th>
+                        <th pSortableColumn="uniqueKey" scope="col">Código <p-sortIcon field="uniqueKey"></p-sortIcon></th>
+                        <th pSortableColumn="name" scope="col">Nombre <p-sortIcon field="name"></p-sortIcon></th>
+                        <th pSortableColumn="nickname" scope="col">Alias <p-sortIcon field="nickname"></p-sortIcon></th>
+                        <th pSortableColumn="ruc" scope="col">RUC <p-sortIcon field="ruc"></p-sortIcon></th>
+                        <th pSortableColumn="createdAt" scope="col">Fecha de Creación <p-sortIcon field="createdAt"></p-sortIcon>
+                        </th>
+                        <th scope="col"></th>
+                    </tr>
+                </ng-template>
+                <ng-template pTemplate="body" let-company>
+                    <tr>
+                        <td>
+                            <p-tableCheckbox [value]="company"></p-tableCheckbox>
+                        </td>
+                        <td>{{company.uniqueKey}}</td>
+                        <td>{{company.name}}</td>
+                        <td>{{company.nickname}}</td>
+                        <td>{{company.ruc}}</td>
+                        <td>{{company.createdAt | date}}</td>
+                        <td>
+                            <button pButton pRipple type="button" icon="pi pi-pencil"
+                                class="p-button-rounded p-button-text" (click)="editCompany(company)"
+                                (click)="openEdit(company)"></button>
+                        </td>
+                    </tr>
+                </ng-template>
+                <ng-template pTemplate="emptymessage">
+					<tr>
+						<td colspan="8" style="text-align: center; font-weight: bold; font-size: 1.2em; padding: 20px;">Empresas no encontradas.</td>
+					</tr>
+				</ng-template>
+				<ng-template pTemplate="loadingbody">
+					<tr>
+						<td colspan="8">Cargando los datos de las Empresas. Por favor espere.</td>
+					</tr>
+				</ng-template>
+            </p-table>
+        </div>
+        <p-dialog [(visible)]="deleteCompaniesDialog" header="Confirmar" [modal]="true" [style]="{width:'450px'}">
+            <div class="flex align-items-center justify-content-center">
+                <i class="pi pi-exclamation-triangle mr-3" style="font-size: 2rem"></i>
+                <span>¿Está seguro de que desea eliminar las emprsas seleccionados?</span>
+            </div>
+            <ng-template pTemplate="footer">
+                <button pButton pRipple icon="pi pi-times" class="p-button-text" label="No"
+                    (click)="deleteCompaniesDialog = false"></button>
+                <button pButton pRipple icon="pi pi-check" class="p-button-text" label="Sí"
+                    (click)="confirmDeleteSelected()"></button>
+            </ng-template>
+        </p-dialog>
+    </div>
+</div>

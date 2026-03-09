@@ -1,0 +1,19 @@
+/* Estilos CSS específicos para el mapa */
+google-map {
+    display: block;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    height: 400px;
+}
+
+input {
+    margin-bottom: 15px;
+}
+
+.p-dropdown {
+    margin-bottom: 15px;
+}
+
+.input-labels{
+    font-weight: bold ;
+}

@@ -1,0 +1,141 @@
+<div class="grid">
+    <div class="col-12">
+        <div class="card">
+            <h5 style="color: #005BA8; font-weight: bold;">Gateways</h5>
+            <p-toast></p-toast>
+            <p-toolbar>
+                <div class="p-toolbar-group-left flex flex-wrap">
+                    <button pButton type="button" label="Agregar" icon="pi pi-plus" class="mr-2"
+                        (click)="openNew()"></button>
+                        <button pButton pRipple label="Eliminar" icon="pi pi-trash" class="p-button-danger"
+                        (click)="deleteSelectedGateways()"
+                        [disabled]="!selectedGateways || !selectedGateways.length"></button>
+                </div>
+                <!--
+                <ng-template pTemplate="right">
+                    <p-fileUpload mode="basic" accept="image/*" [maxFileSize]="1000000" label="Importar"
+                        chooseLabel="Importar" class="mr-2 inline-block"></p-fileUpload>
+                    <button pButton pRipple label="Exportar" icon="pi pi-upload" class="p-button-secondary"
+                        (click)="dt.exportCSV()"></button>
+                </ng-template>
+                -->
+            </p-toolbar>
+        </div>
+    </div>
+    <div class="col-12">
+        <div class="card">
+            <p-table #dt [value]="gateways" [columns]="cols" responsiveLayout="scroll" [rows]="10"
+                [globalFilterFields]="['uniqueKey', 'serial', 'name', 'type', 'region', 'subRed']" [paginator]="true"
+                [rowsPerPageOptions]="[10,20,30]" [showCurrentPageReport]="true"
+                currentPageReportTemplate="Mostrando {first} a {last} de {totalRecords} entradas"
+                [(selection)]="selectedGateways" selectionMode="multiple" [rowHover]="true" dataKey="uniqueKey">
+                <ng-template pTemplate="caption">
+                    <div class="flex flex-column md:flex-row md:justify-content-between md:align-items-center">
+                        <h5 class="m-0">Administrar Gateways</h5>
+                        <span class="block mt-2 md:mt-0 p-input-icon-left">
+                            <i class="pi pi-search"></i>
+                            <input pInputText type="text" (input)="onGlobalFilter(dt, $event)" placeholder="Buscar..."
+                                class="w-full sm:w-auto" />
+                        </span>
+                    </div>
+                </ng-template>
+
+                <ng-template pTemplate="header">
+                    <tr>
+                        <th style="width: 3rem">
+                            <p-tableHeaderCheckbox></p-tableHeaderCheckbox>
+                        </th>
+                        <th pSortableColumn="uniqueKey">Código <p-sortIcon field="uniqueKey"></p-sortIcon></th>
+                        <th pSortableColumn="serial">Número de Serie <p-sortIcon field="serial"></p-sortIcon></th>
+                        <th pSortableColumn="name">Nombre <p-sortIcon field="name"></p-sortIcon></th>
+                        <th pSortableColumn="type">Tipo <p-sortIcon field="type"></p-sortIcon></th>
+                        <th pSortableColumn="region">Región <p-sortIcon field="region"></p-sortIcon></th>
+                        <th pSortableColumn="subRed">Sub Red <p-sortIcon field="subRed"></p-sortIcon></th>
+                        <th pSortableColumn="state">Estado <p-sortIcon field="state"></p-sortIcon></th>
+                        <th></th>
+                    </tr>
+                </ng-template>
+
+                <ng-template pTemplate="body" let-gateway>
+                    <tr>
+                        <td>
+                            <p-tableCheckbox [value]="gateway"></p-tableCheckbox>
+                        </td>
+                        <td style="width:14%; min-width:10rem;">
+                            <span class="p-column-title">Código</span>
+                            {{gateway.uniqueKey}}
+                        </td>
+                        <td style="width:14%; min-width:10rem;">
+                            <span class="p-column-title">GW EUI</span>
+                            {{gateway.gwEui}}
+                        </td>
+                        <td style="width:14%; min-width:10rem;">
+                            <span class="p-column-title">Nombre</span>
+                            {{gateway.name}}
+                        </td>
+                        <td style="width:14%; min-width:10rem;">
+                            <span class="p-column-title">Tipo</span>
+                            {{gateway.type}}
+                        </td>
+                        <td style="width:14%; min-width:10rem;">
+                            <span class="p-column-title">Region</span>
+                            {{gateway.region}}
+                        </td>
+                        <td style="width:14%; min-width:10rem;">
+                            <span class="p-column-title">Sub Red</span>
+                            {{gateway.subRed}}
+                        </td>
+                        <td style="width:14%; min-width:10rem;">
+                            <span class="p-column-title">Estado</span>
+                            {{gateway.state ? 'Activo' : 'Inactivo'}}
+                        </td>
+                        <td>
+                            <div class="flex">
+                                <button pButton pRipple type="button" icon="pi pi-pencil"
+                                    class="p-button-rounded p-button-text" (click)="openEdit(gateway)"
+                                    ></button>
+                            </div>
+                        </td>
+                    </tr>
+                </ng-template>
+                <ng-template pTemplate="emptymessage">
+                    <tr>
+                        <td colspan="8" style="text-align: center; font-weight: bold; font-size: 1.2em; padding: 20px;">
+                            Gateways no encontrados.</td>
+                    </tr>
+                </ng-template>
+                <ng-template pTemplate="loadingbody">
+                    <tr>
+                        <td colspan="8">Cargando los datos de los Gateways. Por favor espere.</td>
+                    </tr>
+                </ng-template>
+            </p-table>
+        </div>
+        <p-dialog [(visible)]="deleteGatewayDialog" header="Confirmar" [modal]="true" [style]="{width:'450px'}">
+            <div class="flex align-items-center justify-content-center">
+                <i class="pi pi-exclamation-triangle mr-3" style="font-size: 2rem"></i>
+                <span *ngIf="gateway">¿Está seguro de que desea eliminar <b>{{gateway.name}}
+                        {{gateway.serial}}</b>?</span>
+            </div>
+            <ng-template pTemplate="footer">
+                <button pButton pRipple icon="pi pi-times" class="p-button-text" label="No"
+                    (click)="deleteGatewayDialog = false"></button>
+                <button pButton pRipple icon="pi pi-check" class="p-button-text p-button-warning" label="Sí"
+                    (click)="confirmDelete()"></button>
+            </ng-template>
+        </p-dialog>
+
+        <p-dialog [(visible)]="deleteGatewaysDialog" header="Confirmar" [modal]="true" [style]="{width:'450px'}">
+            <div class="flex align-items-center justify-content-center">
+                <i class="pi pi-exclamation-triangle mr-3" style="font-size: 2rem"></i>
+                <span>¿Está seguro de que desea eliminar los gateways seleccionados?</span>
+            </div>
+            <ng-template pTemplate="footer">
+                <button pButton pRipple icon="pi pi-times" class="p-button-text" label="No"
+                    (click)="deleteGatewaysDialog = false"></button>
+                <button pButton pRipple icon="pi pi-check" class="p-button-text" label="Sí"
+                    (click)="confirmDeleteSelected()"></button>
+            </ng-template>
+        </p-dialog>
+    </div>
+</div>

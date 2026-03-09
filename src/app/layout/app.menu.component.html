@@ -1,0 +1,9 @@
+<ul class="layout-menu">
+    <ng-container *ngFor="let item of model; let i = index;">
+        <li app-menuitem *ngIf="!item.separator" [item]="item" [index]="i" [root]="true"></li>
+        <li *ngIf="item.separator" class="menu-separator"></li>
+    </ng-container>
+    <div style="margin-top: 4rem;">
+        <button pButton pRipple type="button" icon="pi pi-sign-out" label="Salir" class="p-button-rounded p-button-danger p-button-outlined" style="width: 100%;" (click) = "clearLocalStorageAndLogout()"></button>
+    </div>
+</ul>

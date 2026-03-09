@@ -1,0 +1,26 @@
+google-map {
+    display: block;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    height: 400px;
+}
+
+input {
+    margin-bottom: 15px;
+}
+
+.p-dropdown {
+    margin-bottom: 15px;
+}
+
+.input-labels{
+    font-weight: bold ;
+}
+
+.cursor-pointer {
+    cursor: pointer;
+}
+
+li:hover {
+    background-color: #f4f4f4;
+}

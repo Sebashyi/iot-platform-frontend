@@ -1,0 +1,52 @@
+<div class="grid">
+    <div class="col-12">
+        <div class="card">
+            <h5 style="color: #005BA8; font-weight: bold;">Editar Empresa</h5>
+            <p-toast></p-toast>
+            <p-toolbar>
+                <div class="p-toolbar-group-left flex flex-wrap">
+                    <button pTooltip="Volver" pButton pRipple type="button" icon="pi pi-angle-left"
+                        class="p-button-rounded p-button-text p-button-plain mr-2" (click)="onGoBack()"></button>
+                </div>
+                <div class="p-toolbar-group-right">
+                    <button pButton type="button" label="Guardar" icon="pi pi-save" class="p-button-success mr-2"
+                        (click)="changeCompanyDialog = true"></button>
+                    <button pButton type="button" label="Restablecer" icon="pi pi-refresh" class="p-button-warning mr-2"
+                        (click)="onClear()"></button>
+                </div>
+            </p-toolbar>
+        </div>
+    </div>
+    <div class="col-12">
+        <div class="card">
+            <div class="p-fluid p-formgrid grid">
+                <div class="field col-12 md:col-4">
+                    <label htmlFor="ruc" class="input-labels">RUC</label>
+                    <input pInputText id="ruc" [(ngModel)]="company.ruc" name="ruc" required />
+                </div>
+            </div>
+            <div class="p-fluid p-formgrid grid">
+                <div class="field col-12 md:col-8">
+                    <label htmlFor="name" class="input-labels">Nombre de la empresa</label>
+                    <input pInputText id="name" [(ngModel)]="company.name" name="name" required />
+                </div>
+                <div class="field col-12 md:col-4">
+                    <label htmlFor="nickname" class="input-labels">Alias de la empresa</label>
+                    <input pInputText id="nickname" [(ngModel)]="company.nickname" name="nickname" required />
+                </div>
+            </div>
+        </div>
+    </div>
+    <p-dialog [(visible)]="changeCompanyDialog" header="Confirmar" [modal]="true" [style]="{width:'450px'}">
+        <div class="flex align-items-center justify-content-center">
+            <i class="pi pi-exclamation-triangle mr-3" style="font-size: 2rem"></i>
+            <span>¿Está seguro de que desea modificar esta Empresa?</span>
+        </div>
+        <ng-template pTemplate="footer">
+            <button pButton pRipple icon="pi pi-times" class="p-button-text" label="No"
+                (click)="changeCompanyDialog = false"></button>
+            <button pButton pRipple icon="pi pi-check" class="p-button-text" label="Sí"
+                (click)="onSave()"></button>
+        </ng-template>
+    </p-dialog>
+</div>

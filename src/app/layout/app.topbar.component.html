@@ -1,0 +1,25 @@
+<div class="layout-topbar">
+    <a class="layout-topbar-logo" routerLink="">
+        <img src="assets/logo/Logos_m3_verificaciones_final_Mesa_de_trabajo_1.png" alt="logo" style="width: 65px; height: auto;">
+        <span style="color: #005BA8;">Sociedad Comercial Hidrodistribuciones</span>
+    </a>
+
+    <button #menubutton class="p-link layout-menu-button layout-topbar-button" (click)="layoutService.onMenuToggle()">
+        <i class="pi pi-bars"></i>
+    </button>
+
+    <button #topbarmenubutton class="p-link layout-topbar-menu-button layout-topbar-button" (click)="layoutService.showProfileSidebar()">
+        <i class="pi pi-ellipsis-v"></i>
+    </button>
+
+    <div #topbarmenu class="layout-topbar-menu" [ngClass]="{'layout-topbar-menu-mobile-active': layoutService.state.profileSidebarVisible}">
+        <div class="p-link">
+            <label class="input-labels" style="margin-left: 4px;">Empresas: </label>
+            <p-dropdown [options]="companies" optionLabel="name" [(ngModel)]="selectedState" placeholder="Selecciona una Empresa" (onChange)="onCompanyChange(selectedState)" ></p-dropdown>
+        </div>
+        <button class="p-link layout-topbar-button">
+            <i class="pi pi-user"></i>
+            <span>Profile</span>
+        </button>
+    </div>
+</div>

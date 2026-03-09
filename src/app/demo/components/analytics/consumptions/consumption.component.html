@@ -1,0 +1,146 @@
+<div class="grid">
+    <p-toast></p-toast>
+    <div class="col-12">
+        <div class="card">
+            <h5 style="color: #005BA8; font-weight: bold;">Informe de Consumo</h5>
+            <p-dropdown [options]="dropdownBrandMeter" optionLabel="name" [(ngModel)]="selectedBrand"
+                placeholder="Marca" class="mr-2" (onChange)="loadModelsByBrand()"></p-dropdown>
+            <p-dropdown [options]="dropdownModelMeter" optionLabel="name" [(ngModel)]="selectedModel"
+                placeholder="Modelo" class="mr-2"></p-dropdown>
+            <p-dropdown [options]="dropdownItemsDiameter" optionLabel="name" [(ngModel)]="selectedDiameter"
+                placeholder="Diámetro" class="mr-2"></p-dropdown>
+            <p-calendar id="startDate" [(ngModel)]="startDate" dateFormat="yy-mm-dd" (ngModelChange)="updateChart()"
+                placeholder="Fecha de inicio" [maxDate]="endDate" [showButtonBar]="true" class="mr-2"
+                (ngModelChange)="updateChart()">
+            </p-calendar>
+            <p-calendar id="endDate" [(ngModel)]="endDate" dateFormat="yy-mm-dd" (ngModelChange)="updateChart()"
+                placeholder="Fecha de fin" [minDate]="startDate" [showButtonBar]="true" class="mr-2"
+                (ngModelChange)="updateChart()">
+            </p-calendar>
+            <button pButton pRipple type="button" label="Buscar" icon="pi pi-search" class="mr-2"
+                (click)="updateChart()"></button>
+            <button pButton pRipple type="button" label="Limpiar" icon="pi pi-replay" class="mr-2 p-button-secondary"
+                (click)="cleanFilters()"></button>
+            <p-selectButton [options]="stateOptions" [(ngModel)]="value" optionLabel="label" optionValue="value"
+                (ngModelChange)="updateChart()">
+            </p-selectButton>
+        </div>
+    </div>
+    <div class="col-12 md:col-6">
+        <div class="card">
+            <p-table #dt [value]="consumptions" responsiveLayout="scroll" [rows]="10"
+                [globalFilterFields]="['serial', 'date', 'consumption']" [paginator]="true"
+                [rowsPerPageOptions]="[10,20,30]" [showCurrentPageReport]="true"
+                currentPageReportTemplate="Mostrando los registros del {first} al {last} de {totalRecords} registros"
+                [rowHover]="true" dataKey="serial">
+                <ng-template pTemplate="caption">
+                    <div class="flex">
+                        <button pButton pRipple label="Exportar" icon="pi pi-upload" class="p-button-secondary"
+                        [disabled]="!consumptions || consumptions.length === 0" (click)="showDialog()"></button>
+                        <span class="p-input-icon-left ml-auto">
+                            <i class="pi pi-search"></i>
+                            <input pInputText type="text" (input)="onGlobalFilter(dt, $event)" placeholder="Buscar..."
+                                class="w-full sm:w-auto" />
+                        </span>
+                    </div>
+                </ng-template>
+
+                <ng-template pTemplate="header">
+                    <tr>
+                        <th pSortableColumn="serial" scope="col">Serial <p-sortIcon field="serial"></p-sortIcon></th>
+                        <th pSortableColumn="date" scope="col">Fecha <p-sortIcon field="date"></p-sortIcon></th>
+                        <th pSortableColumn="consumption" scope="col">Consumo <p-sortIcon
+                                field="consumption"></p-sortIcon>
+                        </th>
+                    </tr>
+                </ng-template>
+                <ng-template pTemplate="body" let-consumption>
+                    <tr>
+                        <td style="width:14%; min-width:10rem;">
+                            <span class="p-column-title">Serial</span>
+                            {{consumption.serial}}
+                        </td>
+                        <td style="width:14%; min-width:10rem;">
+                            <span class="p-column-title">Date</span>
+                            {{ formatDate(consumption.date) }}
+                        </td>
+                        <td style="width:14%; min-width:10rem;">
+                            <span class="p-column-title">Consumo Total</span>
+                            {{consumption.consumption}}
+                        </td>
+                    </tr>
+                </ng-template>
+                <ng-template pTemplate="emptymessage">
+                    <tr>
+                        <td colspan="8" style="text-align: center; font-weight: bold; font-size: 1.2em; padding: 20px;">
+                            Consumos no encontrados.</td>
+                    </tr>
+                </ng-template>
+                <ng-template pTemplate="loadingbody">
+                    <tr>
+                        <td colspan="8">Cargando los datos de Consumos. Por favor espere.</td>
+                    </tr>
+                </ng-template>
+            </p-table>
+        </div>
+    </div>
+    <div class="col-12 md:col-6">
+        <div class="field col-12 md:col-12 card">
+            <h5 style="color: #005BA8; font-weight: bold;">Curva de Consumo</h5>
+            <p-chart type="line" [data]="chartData" [options]="chartOptions"></p-chart>
+        </div>
+    </div>
+</div>
+
+<div class="card flex justify-content-center">
+    <p-dialog header="Seleccione los campos que desea exportar" [modal]="true" [(visible)]="visible" [style]="{ width: '50rem' }">
+        <div class="card flex justify-content-center gap-3">
+            <div class="flex align-items-center">
+                <p-checkbox 
+                    [(ngModel)]="optionsExport"
+                    label="Serial" 
+                    name="serial" 
+                    value="serial" />
+            </div>
+            <div class="flex align-items-center">
+                <p-checkbox 
+                    [(ngModel)]="optionsExport"
+                    label="Fecha"
+                    name="date" 
+                    value="date" />
+            </div>
+            <div class="flex align-items-center">
+                <p-checkbox 
+                    [(ngModel)]="optionsExport"
+                    label="Consumo" 
+                    name="consumption" 
+                    value="consumption" />
+            </div>
+            <div class="flex align-items-center">
+                <p-checkbox 
+                    [(ngModel)]="optionsExport"
+                    label="Diámetro" 
+                    name="diameter" 
+                    value="diameter" />
+            </div>
+            <div class="flex align-items-center">
+                <p-checkbox 
+                    [(ngModel)]="optionsExport"
+                    label="Modelo" 
+                    name="model" 
+                    value="model" />
+            </div>
+            <div class="flex align-items-center">
+                <p-checkbox 
+                    [(ngModel)]="optionsExport"
+                    label="Dev Eui" 
+                    name="devEui" 
+                    value="devEui" />
+            </div>
+        </div>
+        <div class="flex justify-content-end gap-2">
+            <p-button label="Cancelar" severity="secondary" (onClick)="visible = false" />
+            <p-button label="Exportar" (onClick)="exportToCSV()" />
+        </div>
+    </p-dialog>
+</div>

@@ -1,0 +1,31 @@
+export interface Meter {
+    uniqueKey?: string;
+    appKey: string;
+    appSkey: string;
+    authenticationType: string;
+    classSupport: string;
+    companyUniqueKey: string;
+    createdAt?: Date;
+    detail: string;
+    devAddr: string;
+    devEui: string;
+    diameter: string;
+    directionGprs: string;
+    euiAplication: string;
+    gatewayUniqueKey: string;
+    imei: string;
+    lastCommunication: Date;
+    latitude: number;
+    longitude: number;
+    model: string;
+    name: string;
+    serialNumberGprs: string;
+    nwkSkey: string;
+    region: string;
+    serial: string;
+    state: boolean;
+    subRed: string;
+    typeCommunication: string;
+    typeProduct: string;
+    valveState: string;
+}

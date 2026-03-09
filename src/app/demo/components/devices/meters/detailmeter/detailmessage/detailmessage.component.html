@@ -1,0 +1,178 @@
+<div class="grid">
+    <div class="col-12">
+        <div class="card">
+            <h5 style="color: #005BA8; font-weight: bold;">Detalles de Mensaje</h5>
+            <p-toast></p-toast>
+            <p-toolbar>
+                <div class="p-toolbar-group-left flex flex-wrap">
+                    <button pTooltip="Volver" pButton type="button" icon="pi pi-angle-left"
+                        class="p-button-rounded p-button-text p-button-plain mr-2" (click)="onGoBack()"></button>
+                </div>
+            </p-toolbar>
+        </div>
+    </div>
+    <div class="col-12">
+        <div class="card">
+            <p-table [value]="messages" class="p-datatable-gridlines" styleClass="p-datatable-gridlines">
+                <ng-template pTemplate="caption">
+                    <div class="flex align-items-center justify-content-between">
+                        Datos
+                    </div>
+                </ng-template>
+                <ng-template pTemplate="header">
+                    <tr>
+                        <th scope="col">Atributo</th>
+                        <th scope="col">Valor</th>
+                    </tr>
+                </ng-template>
+                <ng-template pTemplate="body" let-message>
+                    <tr>
+                        <td>Fecha y hora</td>
+                        <td>{{ message.createdAt }}</td>
+                    </tr>
+                    <tr>
+                        <td>Dev EUI:</td>
+                        <td>{{ message.devEui }}</td>
+                    </tr>
+                    <tr>
+                        <td>Cantidad de consumo:</td>
+                        <td>{{ message.volume_data }}</td>
+                    </tr>
+                    <tr>
+                        <td>Datos en bruto:</td>
+                        <td>{{ message.raw_data }}</td>
+                    </tr>
+                </ng-template>
+            </p-table>
+        </div>
+    </div>
+    <div class="col-12">
+        <div class="card">
+            <p-table [value]="messages" class="p-datatable-gridlines" styleClass="p-datatable-gridlines">
+                <ng-template pTemplate="caption">
+                    <div class="flex align-items-center justify-content-between">
+                        Alarmas
+                    </div>
+                </ng-template>
+                <ng-template pTemplate="header">
+                    <tr>
+                        <th scope="col">Tipo de alarma</th>
+                        <th scope="col">Estado</th>
+                    </tr>
+                </ng-template>
+                <ng-template pTemplate="body" let-message>
+                    <tr>
+                        <td>Batería baja:</td>
+                        <td>
+                            <span *ngIf="message.low_batery_alarm">
+                                <p-tag icon="pi pi-exclamation-triangle" severity="warning" value="Requiere atención" />
+                            </span>
+                            <span *ngIf="!message.low_batery_alarm">
+                                <p-tag icon="pi pi-minus" severity="success"/>
+                            </span>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>Tubería vacía:</td>
+                        <td>
+                            <span *ngIf="message.empty_pipe_alarm">
+                                <p-tag icon="pi pi-exclamation-triangle" severity="warning" value="Requiere atención" />
+                            </span>
+                            <span *ngIf="!message.empty_pipe_alarm">
+                                <p-tag icon="pi pi-minus" severity="success"/>
+                            </span>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>Flujo inverso:</td>
+                        <td>
+                            <span *ngIf="message.reverse_flow_alarm">
+                                <p-tag icon="pi pi-exclamation-triangle" severity="warning" value="Requiere atención" />
+                            </span>
+                            <span *ngIf="!message.reverse_flow_alarm">
+                                <p-tag icon="pi pi-minus" severity="success"/>
+                            </span>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>Fuera de rango:</td>
+                        <td>
+                            <span *ngIf="message.over_range_alarm">
+                                <p-tag icon="pi pi-exclamation-triangle" severity="warning" value="Requiere atención" />
+                            </span>
+                            <span *ngIf="!message.over_range_alarm">
+                                <p-tag icon="pi pi-minus" severity="success"/>
+                            </span>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>Sobretemperatura:</td>
+                        <td>
+                            <span *ngIf="message.over_temprature_alarm">
+                                <p-tag icon="pi pi-exclamation-triangle" severity="warning" value="Requiere atención" />
+                            </span>
+                            <span *ngIf="!message.over_temprature_alarm">
+                                <p-tag icon="pi pi-minus" severity="success"/>
+                            </span>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>EEPROM Error:</td>
+                        <td>
+                            <span *ngIf="message.eeprom_error">
+                                <p-tag icon="pi pi-exclamation-triangle" severity="warning" value="Requiere atención" />
+                            </span>
+                            <span *ngIf="!message.eeprom_error">
+                                <p-tag icon="pi pi-minus" severity="success"/>
+                            </span>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>Fugas:</td>
+                        <td>
+                            <span *ngIf="message.leakage_alarm">
+                                <p-tag icon="pi pi-exclamation-triangle" severity="warning" value="Requiere atención" />
+                            </span>
+                            <span *ngIf="!message.leakage_alarm">
+                                <p-tag icon="pi pi-minus" severity="success"/>
+                            </span>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>Ráfaga:</td>
+                        <td>
+                            <span *ngIf="message.burst_alarm">
+                                <p-tag icon="pi pi-exclamation-triangle" severity="warning" value="Requiere atención" />
+                            </span>
+                            <span *ngIf="!message.burst_alarm">
+                                <p-tag icon="pi pi-minus" severity="success"/>
+                            </span>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>Manipulación:</td>
+                        <td>
+                            <span *ngIf="message.tamper_alarm">
+                                <p-tag icon="pi pi-exclamation-triangle" severity="warning" value="Requiere atención" />
+                            </span>
+                            <span *ngIf="!message.tamper_alarm">
+                                <p-tag icon="pi pi-minus" severity="success"/>
+                            </span>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>Congelación:</td>
+                        <td>
+                            <span *ngIf="message.freezing_alarm">
+                                <p-tag icon="pi pi-exclamation-triangle" severity="warning" value="Requiere atención" />
+                            </span>
+                            <span *ngIf="!message.freezing_alarm">
+                                <p-tag icon="pi pi-minus" severity="success"/>
+                            </span>
+                        </td>
+                    </tr>
+                </ng-template>
+            </p-table>
+        </div>
+    </div>
+</div>

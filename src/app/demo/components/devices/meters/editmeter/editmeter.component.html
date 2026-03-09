@@ -1,0 +1,268 @@
+<div class="grid">
+    <div class="col-12">
+        <div class="card">
+            <h5 style="color: #005BA8; font-weight: bold;">Editar Medidor</h5>
+            <p-toast></p-toast>
+            <p-toolbar>
+                <div class="p-toolbar-group-left flex flex-wrap">
+                    <button pTooltip="Volver" pButton type="button" icon="pi pi-angle-left"
+                        class="p-button-rounded p-button-text p-button-plain mr-2" (click)="onGoBack()"></button>
+                </div>
+                <div class="p-toolbar-group-right">
+                    <button pButton type="button" label="Guardar" icon="pi pi-save" class="mr-2 p-button-success"
+                        (click)="changeMeterDialog = true"></button>
+                    <button pButton type="button" label="Resetear" icon="pi pi-refresh" class="p-button-warning mr-2"
+                        (click)="onClear()"></button>
+                </div>
+            </p-toolbar>
+        </div>
+    </div>
+    <div class="col-12">
+        <div class="card">
+            <div class="p-fluid p-formgrid grid">
+                <div class="field col-12 md:col-4">
+                    <label htmlFor="firstname2" class="input-labels">Estado del Medior</label>
+                    <p-dropdown [options]="dropdownItemsState" optionLabel="name" [(ngModel)]="selectedState"
+                        placeholder="Seleccione un estado"></p-dropdown>
+                </div>
+                <div class="field col-12 md:col-4">
+                    <label htmlFor="name" class="input-labels">Nombre</label>
+                    <input pInputText id="name" type="text" [(ngModel)]="meter.name" placeholder="Ingrese un nombre" />
+                </div>
+                <div class="field col-12 md:col-4">
+                    <label htmlFor="name" class="input-labels">Diámetro</label>
+                    <p-dropdown [options]="dropdownItemsDiameter" optionLabel="name" [(ngModel)]="selectedDiameter"
+                        placeholder="Seleccione un diámetro"></p-dropdown>
+                </div>
+                <div class="field col-12 md:col-4">
+                    <label htmlFor="brand-meter" class="input-labels">Marca del Medidor</label>
+                    <p-dropdown [options]="dropdownBrandMeter" optionLabel="name" [(ngModel)]="selectedBrand"
+                        placeholder="Seleccione una marca" (onChange)="loadModelsByBrand()"></p-dropdown>
+                </div>
+                <div class="field col-12 md:col-4">
+                    <label htmlFor="model-meter" class="input-labels">Modelo del Medidor</label>
+                    <p-dropdown [options]="dropdownModelMeter" optionLabel="name" [(ngModel)]="selectedModel"
+                        placeholder="Seleccione un modelo"></p-dropdown>
+                </div>
+                <div class="field col-12 md:col-4">
+                    <label htmlFor="company" class="input-labels">Empresa</label>
+                    <p-dropdown [options]="companies" optionLabel="name" [(ngModel)]="selectedCompany"
+                        placeholder="Seleccione una empresa"
+                        (onChange)="loadGatewaysByCompany(selectedCompany.uniqueKey)"></p-dropdown>
+                </div>
+                <div class="field col-12 md:col-4">
+                    <label htmlFor="devEui" class="input-labels">Dev EUI</label>
+                    <input pInputText id="devEui" type="text" [(ngModel)]="meter.devEui"
+                        placeholder="Ingrese un Dev EUI" />
+                </div>
+                <div class="field col-12 md:col-4">
+                    <label htmlFor="detail" class="input-labels">Detalle</label>
+                    <input pInputText id="detail" type="text" [(ngModel)]="meter.detail"/>
+                </div>
+            </div>
+            <div class="p-fluid p-formgrid grid">
+                <div class="field col-12 md:col-6">
+                    <div class="field">
+                        <label for="countrySelect" class="input-labels">País</label>
+                        <p-dropdown [options]="countries" optionLabel="countryName" [(ngModel)]="selectedCountry"
+                            (onChange)="onCountryChange($event.value)" id="countrySelect"
+                            placeholder="Seleccione un pais"></p-dropdown>
+                    </div>
+                    <div class="field">
+                        <label for="provinceSelect" class="input-labels">Provincia</label>
+                        <p-dropdown [options]="provinces" optionLabel="name" [(ngModel)]="selectedProvince"
+                            (onChange)="onProvinceChange($event.value)" id="provinceSelect"
+                            placeholder="Seleccione una provincia"></p-dropdown>
+                    </div>
+                    <div class="field">
+                        <label for="citySelect" class="input-labels">Ciudad</label>
+                        <p-dropdown [options]="cities" optionLabel="name" [(ngModel)]="selectedCity"
+                            (onChange)="onCityChange($event.value)" id="citySelect"
+                            placeholder="Seleccione una ciudad"></p-dropdown>
+                    </div>
+                    <div class="field">
+                        <label for="latInput" class="input-labels">Latitud</label>
+                        <input pInputText id="latInput" type="text" [(ngModel)]="lat" (input)="onLatLngChange()" />
+                    </div>
+                    <div class="field">
+                        <label for="lngInput" class="input-labels">Longitud</label>
+                        <input pInputText id="lngInput" type="text" [(ngModel)]="lng" (input)="onLatLngChange()" />
+                    </div>
+                </div>
+                <div class="field col-12 md:col-6"
+                    style="display: flex; flex-direction: column; justify-content: center;" #mapContainer>
+                    <google-map height="100%" width="w-full" [options]="options" id="map"> </google-map>
+                </div>
+            </div>
+            <div class="field col-12 md:col-4">
+                <label htmlFor="lastname2" class="input-labels">Comunicación</label>
+                <div class="grid formgrid">
+                    <div class="col-12 md:col-4">
+                        <div class="field-checkbox">
+                            <p-checkbox name="group1" value="LoRaWAN" [(ngModel)]="comunicationCheck" id="lora"></p-checkbox>
+                            <label for="ny">LoRaWAN</label>
+                        </div>
+                    </div>
+                    <div class="col-12 md:col-4">
+                        <div class="field-checkbox">
+                            <p-checkbox name="group1" value="GPRS" [(ngModel)]="comunicationCheck" id="gprs"></p-checkbox>
+                            <label for="sf">GPRS</label>
+                        </div>
+                    </div>
+                    <div class="col-12 md:col-4">
+                        <div class="field-checkbox">
+                            <p-checkbox name="group1" value="NB-IoT" [(ngModel)]="comunicationCheck" id="nb"></p-checkbox>
+                            <label for="la">NB-IoT</label>
+                        </div>
+                    </div>
+                    <div class="col-12 md:col-4">
+                        <div class="field-checkbox">
+                            <p-checkbox name="group1" value="Mbus" [(ngModel)]="comunicationCheck" id="mbus"></p-checkbox>
+                            <label for="la">Mbus</label>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="col-12" *ngIf="comunicationCheck.includes('LoRaWAN')">
+        <div class="card">
+            <div class="p-fluid p-formgrid grid">
+                <div class="field col-12 md:col-4">
+                    <label htmlFor="firstname2" class="input-labels">Clase de apoyo</label>
+                    <div class="grid formgrid">
+                        <div class="col-12 md:col-4">
+                            <div class="field-radiobutton">
+                                <p-radioButton name="class" value="A" [(ngModel)]="valClassSupport"
+                                    id="classA"></p-radioButton>
+                                <label for="classA">Clase A</label>
+                            </div>
+                        </div>
+                        <div class="col-12 md:col-4">
+                            <div class="field-radiobutton">
+                                <p-radioButton name="class" value="B" [(ngModel)]="valClassSupport"
+                                    id="classB"></p-radioButton>
+                                <label for="classB">Clase B</label>
+                            </div>
+                        </div>
+                        <div class="col-12 md:col-4">
+                            <div class="field-radiobutton">
+                                <p-radioButton name="class" value="C" [(ngModel)]="valClassSupport"
+                                    id="classC"></p-radioButton>
+                                <label for="classC">Clase C</label>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="field col-12 md:col-4">
+                    <label htmlFor="region" class="input-labels">Region</label>
+                    <p-dropdown [options]="dropdownItemsRegion" optionLabel="name" [(ngModel)]="selectedRegion"
+                        id="regionSelect" placeholder="Seleccione una region"></p-dropdown>
+                </div>
+                <div class="field col-12 md:col-4">
+                    <label htmlFor="typeProduct" class="input-labels">Tipo de Producto</label>
+                    <p-dropdown [options]="dropdownItemsProductType" optionLabel="name"
+                        [(ngModel)]="selectedTypeProduct" id="typeProductSelect"
+                        placeholder="Seleccione un tipo de producto"></p-dropdown>
+                </div>
+                <div class="field col-12 md:col-4">
+                    <label htmlFor="subred" class="input-labels">Subred</label>
+                    <p-dropdown [options]="dropdownItemsSubRed" optionLabel="name" [(ngModel)]="selectedSubRed"
+                        id="subRedSelect" placeholder="Seleccione una sub-red"></p-dropdown>
+                </div>
+                <div class="field col-12 md:col-4">
+                    <label htmlFor="firstname2" class="input-labels">Tipo de autenticación</label>
+                    <div class="grid formgrid">
+                        <div class="col-12 md:col-4">
+                            <div class="field-radiobutton">
+                                <p-radioButton name="typeAutentification" value="OTA" [(ngModel)]="typeAutentification"
+                                    id="typeAutentification1"></p-radioButton>
+                                <label for="typeAutentification1">OTA</label>
+                            </div>
+                        </div>
+                        <div class="col-12 md:col-4">
+                            <div class="field-radiobutton">
+                                <p-radioButton name="typeAutentification" value="ABP" [(ngModel)]="typeAutentification"
+                                    id="typeAutentification2"></p-radioButton>
+                                <label for="typeAutentification2">ABP</label>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="field col-12 md:col-4" *ngIf="typeAutentification.includes('OTA')">
+                    <label htmlFor="lastname2" class="input-labels">App Key</label>
+                    <input pInputText id="appKey" type="text" [(ngModel)]="meter.appKey"
+                        placeholder="Ingrese un Key" />
+                </div>
+                <div class="field col-12 md:col-4" *ngIf="typeAutentification.includes('ABP')">
+                    <label htmlFor="devAddr" class="input-labels">DevAddr</label>
+                    <input pInputText id="devAddr" type="text" [(ngModel)]="meter.devAddr"
+                        placeholder="Ingrese un Dev Addr" />
+                </div>
+                <div class="field col-12 md:col-4" *ngIf="typeAutentification.includes('ABP')">
+                    <label htmlFor="app" class="input-labels">App SKey</label>
+                    <input pInputText id="appKey" type="text" [(ngModel)]="meter.appSkey"
+                        placeholder="Ingrese una SKey" />
+                </div>
+                <div class="field col-12 md:col-4" *ngIf="typeAutentification.includes('ABP')">
+                    <label htmlFor="lastname2" class="input-labels">Nwk SKey</label>
+                    <input pInputText id="appKey" type="text" [(ngModel)]="meter.nwkSkey"
+                        placeholder="Ingrese un NWK Key" />
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="col-12" *ngIf="comunicationCheck.includes('GPRS')">
+        <div class="card">
+            <div class="p-fluid p-formgrid grid">
+                <div class="field col-12 md:col-4">
+                    <label htmlFor="serial" class="input-labels">Número de serie</label>
+                    <input pInputText id="serial" type="text" [(ngModel)]="meter.serial"
+                        placeholder="Ingrese numero de serie" />
+                </div>
+                <div class="field col-12 md:col-4">
+                    <label htmlFor="directionGprs" class="input-labels">Dirección de la placa GPRS</label>
+                    <input pInputText id="directionGprs" type="text" [(ngModel)]="meter.directionGprs"
+                        placeholder="Ingrese una direccion GPRS" />
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="col-12" *ngIf="comunicationCheck.includes('NB-IoT')">
+        <div class="card">
+            <div class="p-fluid p-formgrid grid">
+                <div class="field col-12 md:col-4">
+                    <label htmlFor="imei" class="input-labels">IMEI</label>
+                    <input pInputText id="imei" type="text" [(ngModel)]="meter.imei" placeholder="Ingrese un IMEI" />
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="col-12" *ngIf="comunicationCheck.includes('Mbus')">
+        <div class="card">
+            <div class="p-fluid p-formgrid grid">
+                <div class="field col-12 md:col-4">
+                    <label htmlFor="gateway" class="input-labels">Gateway</label>
+                    <p-dropdown [options]="gateways" optionLabel="name" [(ngModel)]="selectedGateway" id="countrySelect"
+                        placeholder="Seleccione un Gateway"></p-dropdown>
+                </div>
+                <div class="field col-12 md:col-4">
+                    <label htmlFor="serialNumberGprs" class="input-labels">Número de serie</label>
+                    <input pInputText id="serialNumberGprs" type="text" [(ngModel)]="meter.serialNumberGprs"
+                        placeholder="Ingrese el numero de serie" />
+                </div>
+            </div>
+        </div>
+    </div>
+    <p-dialog [(visible)]="changeMeterDialog" header="Confirmar" [modal]="true" [style]="{width:'450px'}">
+        <div class="flex align-items-center justify-content-center">
+            <i class="pi pi-exclamation-triangle mr-3" style="font-size: 2rem"></i>
+            <span>¿Está seguro de que desea modificar este Medidor?</span>
+        </div>
+        <ng-template pTemplate="footer">
+            <button pButton pRipple icon="pi pi-times" class="p-button-text" label="No"
+                (click)="changeMeterDialog = false"></button>
+            <button pButton pRipple icon="pi pi-check" class="p-button-text" label="Sí" (click)="onSave()"></button>
+        </ng-template>
+    </p-dialog>
+</div>

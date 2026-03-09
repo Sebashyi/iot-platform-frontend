@@ -1,0 +1,17 @@
+.responsive-container {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+}
+
+.responsive-item {
+    flex: 1 1 auto;
+    min-width: calc(50% - 10px);
+}
+
+@media (max-width: 800px) {
+    .responsive-item {
+        flex: 1 1 100%;
+        min-width: 100%;
+    }
+}

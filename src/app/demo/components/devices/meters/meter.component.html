@@ -1,0 +1,208 @@
+<div class="grid">
+    <div class="col-12">
+        <div class="card">
+            <h5 style="color: #005BA8; font-weight: bold;">Medidores</h5>
+            <p-toast></p-toast>
+            <p-toolbar>
+                <div class="p-toolbar-group-left flex flex-wrap">
+                    <button pButton type="button" label="Agregar" icon="pi pi-plus" class="mr-2"
+                        (click)="openNew()"></button>
+                    <button pButton pRipple label="Eliminar" icon="pi pi-trash" class="p-button-danger"
+                        (click)="deleteSelectedMeters()"
+                        [disabled]="!selectedMeters || !selectedMeters.length"></button>
+                </div>
+
+                <ng-template pTemplate="right">
+                    <p-fileUpload mode="basic" accept=".csv" [maxFileSize]="1000000" label="Importar"
+                        chooseLabel="Importar" class="mr-2 inline-block" (click)="showTable()" (onSelect)="handleFileSelect($event)" #fileUpload></p-fileUpload>
+                    <button pButton pRipple label="Exportar" icon="pi pi-upload" class="p-button-secondary"
+                        (click)="dt.exportCSV()"></button>
+                </ng-template>
+            </p-toolbar>
+        </div>
+    </div>
+    <div class="col-12">
+        <div class="card">
+            <p-table #dt [value]="meters" [columns]="cols" responsiveLayout="scroll" [rows]="10"
+                [globalFilterFields]="['uniqueKey', 'serial', 'name', 'devEui', 'diameter', 'model', 'typeCommunication', 'state']"
+                [paginator]="true" [rowsPerPageOptions]="[10,20,30]" [showCurrentPageReport]="true"
+                currentPageReportTemplate="Mostrando {first} a {last} de {totalRecords} entradas"
+                [(selection)]="selectedMeters" selectionMode="multiple" [rowHover]="true" dataKey="uniqueKey">
+                <ng-template pTemplate="caption">
+                    <div class="flex flex-column md:flex-row md:justify-content-between md:align-items-center">
+                        <h5 class="m-0">Administrar Medidores</h5>
+                        <span class="block mt-2 md:mt-0 p-input-icon-left">
+                            <i class="pi pi-search"></i>
+                            <input pInputText type="text" (input)="onGlobalFilter(dt, $event)" placeholder="Buscar..."
+                                class="w-full sm:w-auto" />
+                        </span>
+                    </div>
+                </ng-template>
+
+                <ng-template pTemplate="header">
+                    <tr>
+                        <th style="width: 3rem" scope="col">
+                            <p-tableHeaderCheckbox></p-tableHeaderCheckbox>
+                        </th>
+                        <th pSortableColumn="uniqueKey" scope="col">Código <p-sortIcon field="uniqueKey"></p-sortIcon></th>
+                        <th pSortableColumn="name" scope="col">Número de Serie <p-sortIcon field="name"></p-sortIcon></th>
+                        <th pSortableColumn="devEui" scope="col">Dev EUI <p-sortIcon field="devEui"></p-sortIcon></th>
+                        <th pSortableColumn="diameter" scope="col">Diámetro <p-sortIcon field="diameter"></p-sortIcon></th>
+                        <th pSortableColumn="model" scope="col">Modelo <p-sortIcon field="model"></p-sortIcon></th>
+                        <th pSortableColumn="createdAt" scope="col">Fecha de Creación <p-sortIcon field="createdAt"></p-sortIcon></th>
+                        <th pSortableColumn="state" scope="col">Estado <p-sortIcon field="state"></p-sortIcon></th>
+                        <th scope="col"></th>
+                    </tr>
+                </ng-template>
+                <ng-template pTemplate="body" let-meter>
+                    <tr>
+                        <td>
+                            <p-tableCheckbox [value]="meter"></p-tableCheckbox>
+                        </td>
+                        <td style="width:14%; min-width:10rem;">
+                            <span class="p-column-title">Código</span>
+                            {{meter.uniqueKey}}
+                        </td>
+                        <td style="width:14%; min-width:10rem;">
+                            <span class="p-column-title">Nombre</span>
+                            {{meter.name}}
+                        </td>
+                        <td style="width:14%; min-width:10rem;">
+                            <span class="p-column-title">Dev EUI</span>
+                            {{meter.devEui}}
+                        </td>
+                        <td style="width:14%; min-width:10rem;">
+                            <span class="p-column-title">Diámetro</span>
+                            {{meter.diameter}}
+                        </td>
+                        <td style="width:14%; min-width:10rem;">
+                            <span class="p-column-title">Modelo</span>
+                            {{meter.model}}
+                        </td>
+                        <td style="width:14%; min-width:10rem;">
+                            <span class="p-column-title">Fecha de Creación</span>
+                            {{meter.createdAt | date}}
+                        </td>
+                        <td style="width:14%; min-width:10rem;">
+                            <span class="p-column-title">Estado</span>
+                            {{meter.state ? 'Activo' : 'Inactivo'}}
+                        </td>
+                        <td>
+                            <div class="flex">
+                                <button pButton pRipple type="button" icon="pi pi-file"
+                                    class="p-button-rounded p-button-success p-button-text"
+                                    (click)="goToDetail(meter)"></button>
+                            </div>
+                        </td>
+                    </tr>
+                </ng-template>
+                <ng-template pTemplate="emptymessage">
+                    <tr>
+                        <td colspan="8" style="text-align: center; font-weight: bold; font-size: 1.2em; padding: 20px;">
+                            Medidores no encontrados.</td>
+                    </tr>
+                </ng-template>
+                <ng-template pTemplate="loadingbody">
+                    <tr>
+                        <td colspan="8">Cargando los datos de los Medidores. Por favor espere.</td>
+                    </tr>
+                </ng-template>
+            </p-table>
+        </div>
+
+        <p-dialog [(visible)]="deleteMetersDialog" header="Confirmar" [modal]="true" [style]="{width:'450px'}">
+            <div class="flex align-items-center justify-content-center">
+                <i class="pi pi-exclamation-triangle mr-3" style="font-size: 2rem"></i>
+                <span>¿Está seguro de que desea eliminar los medidores seleccionados?</span>
+            </div>
+            <ng-template pTemplate="footer">
+                <button pButton pRipple icon="pi pi-times" class="p-button-text" label="No"
+                    (click)="deleteMetersDialog = false"></button>
+                <button pButton pRipple icon="pi pi-check" class="p-button-text" label="Sí"
+                    (click)="confirmDeleteSelected()"></button>
+            </ng-template>
+        </p-dialog>
+        <p-dialog [resizable]="false" [modal]="true" [maximizable]="true" appendTo="body"
+            [(visible)]="dialogTableVisible" [style]="{width: '75vw'}" [contentStyle]="{height: '300px'}">
+            <p-table #dt1 [value]="importMeters" [columns]="cols" responsiveLayout="scroll" [rows]="10"
+                [globalFilterFields]="['uniqueKey', 'serial', 'name', 'devEui', 'diameter', 'model', 'typeCommunication', 'state']"
+                [paginator]="true" [rowsPerPageOptions]="[10,20,30]" [showCurrentPageReport]="true"
+                currentPageReportTemplate="Mostrando {first} a {last} de {totalRecords} entradas"
+                [(selection)]="selectedMeters" selectionMode="multiple" [rowHover]="true" dataKey="uniqueKey">
+                <ng-template pTemplate="caption">
+                    <div class="flex flex-column md:flex-row md:justify-content-between md:align-items-center">
+                        <h5 class="m-0">Lista de Medidores</h5>
+                        <span class="block mt-2 md:mt-0 p-input-icon-left">
+                            <i class="pi pi-search"></i>
+                            <input pInputText type="text" (input)="onGlobalFilter(dt1, $event)" placeholder="Buscar..."
+                                class="w-full sm:w-auto" />
+                        </span>
+                    </div>
+                </ng-template>
+
+                <ng-template pTemplate="header">
+                    <tr>
+                        <th pSortableColumn="uniqueKey" scope="col">Código <p-sortIcon field="uniqueKey"></p-sortIcon></th>
+                        <th pSortableColumn="name" scope="col">Número de Serie <p-sortIcon field="name"></p-sortIcon></th>
+                        <th pSortableColumn="devEui" scope="col">Dev EUI <p-sortIcon field="devEui"></p-sortIcon></th>
+                        <th pSortableColumn="diameter" scope="col">Diámetro <p-sortIcon field="diameter"></p-sortIcon></th>
+                        <th pSortableColumn="model" scope="col">Modelo <p-sortIcon field="model"></p-sortIcon></th>
+                        <th pSortableColumn="model" scope="col">Fecha de Creación <p-sortIcon field="model"></p-sortIcon></th>
+                        <th pSortableColumn="state" scope="col">Estado <p-sortIcon field="state"></p-sortIcon></th>
+                    </tr>
+                </ng-template>
+                <ng-template pTemplate="body" let-meter>
+                    <tr>
+                        <td style="width:14%; min-width:10rem;">
+                            <span class="p-column-title">Código</span>
+                            {{meter.uniqueKey}}
+                        </td>
+                        <td style="width:14%; min-width:10rem;">
+                            <span class="p-column-title">Nombre</span>
+                            {{meter.name}}
+                        </td>
+                        <td style="width:14%; min-width:10rem;">
+                            <span class="p-column-title">Dev EUI</span>
+                            {{meter.devEui}}
+                        </td>
+                        <td style="width:14%; min-width:10rem;">
+                            <span class="p-column-title">Diámetro</span>
+                            {{meter.diameter}}
+                        </td>
+                        <td style="width:14%; min-width:10rem;">
+                            <span class="p-column-title">Modelo</span>
+                            {{meter.model}}
+                        </td>
+                        <td style="width:14%; min-width:10rem;">
+                            <span class="p-column-title">Fecha de Creación</span>
+                            {{meter.createdAt | date}}
+                        </td>
+                        <td style="width:14%; min-width:10rem;">
+                            <span class="p-column-title">Estado</span>
+                            {{meter.state ? 'Activo' : 'Inactivo'}}
+                        </td>
+                    </tr>
+                </ng-template>
+                <ng-template pTemplate="emptymessage">
+                    <tr>
+                        <td colspan="8" style="text-align: center; font-weight: bold; font-size: 1.2em; padding: 20px;">
+                            Medidores no encontrados.</td>
+                    </tr>
+                </ng-template>
+                <ng-template pTemplate="loadingbody">
+                    <tr>
+                        <td colspan="8">Cargando los datos de los Medidores. Por favor espere.</td>
+                    </tr>
+                </ng-template>
+            </p-table>
+            <ng-template pTemplate="footer">
+                <button type="button" pButton pRipple icon="pi pi-times" (click)="dialogTableVisible=false" label="Cancelar"
+                    class="p-button-text" (click) = "cleanFile()">
+                </button>
+                <button type="button" pButton pRipple icon="pi pi-check" (click)="dialogTableVisible=false" label="Guardar"
+                    class="p-button-text" (click) = "saveImportedMeters()">
+                </button>
+            </ng-template>
+        </p-dialog>
+    </div>
+</div>

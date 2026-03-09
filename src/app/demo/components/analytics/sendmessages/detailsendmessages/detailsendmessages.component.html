@@ -1,0 +1,56 @@
+<div class="grid">
+    <div class="col-12">
+        <div class="card">
+            <h5 style="color: #005BA8; font-weight: bold;">Detalles de Mensaje</h5>
+            <p-toast></p-toast>
+            <p-toolbar>
+                <div class="p-toolbar-group-left flex flex-wrap">
+                    <button pTooltip="Volver" pButton type="button" icon="pi pi-angle-left"
+                        class="p-button-rounded p-button-text p-button-plain mr-2" (click)="onGoBack()"></button>
+                </div>
+            </p-toolbar>
+        </div>
+    </div>
+    <div class="col-12">
+        <div class="card">
+            <p-table [value]="messages" class="p-datatable-gridlines" styleClass="p-datatable-gridlines">
+                <ng-template pTemplate="header">
+                    <tr>
+                        <th scope="col">Atributo</th>
+                        <th scope="col">Valor</th>
+                    </tr>
+                </ng-template>
+                <ng-template pTemplate="body" let-message>
+                    <tr>
+                        <td>Código:</td>
+                        <td>{{ message.uniqueKey }}</td>
+                    </tr>
+                    <tr>
+                        <td>Serial:</td>
+                        <td>{{ message.serialMeter }}</td>
+                    </tr>
+                    <tr>
+                        <td>Dev EUI:</td>
+                        <td>{{ message.devEui }}</td>
+                    </tr>
+                    <tr>
+                        <td>Fecha y hora</td>
+                        <td>{{ message.createdAt }}</td>
+                    </tr>
+                    <tr>
+                        <td>Tipo de mensaje:</td>
+                        <td>{{ message.typeMessage }}</td>
+                    </tr>
+                    <tr>
+                        <td>Gateways:</td>
+                        <td>{{ message.gws }}</td>
+                    </tr>
+                    <tr>
+                        <td>Datos en bruto:</td>
+                        <td>{{ message.rawReading }}</td>
+                    </tr>
+                </ng-template>
+            </p-table>
+        </div>
+    </div>
+</div>
