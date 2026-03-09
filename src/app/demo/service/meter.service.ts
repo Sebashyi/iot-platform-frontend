@@ -3,12 +3,13 @@ import { HttpClient, HttpHeaders, HttpParams } from '@angular/common/http';
 import { Observable, throwError } from 'rxjs';
 import { Meter } from '../api/meter.model';
 import { map, catchError } from 'rxjs/operators';
+import { environment } from '../../../environments/environment';
 
 @Injectable({
     providedIn: 'root'
 })
 export class MeterService {
-    private readonly apiUrl = 'http://localhost:8082/m3verificaciones/api/v1/meter';
+    private readonly apiUrl = `${environment.apiMeter}/meter`;
 
     constructor(private readonly http: HttpClient) { }
 

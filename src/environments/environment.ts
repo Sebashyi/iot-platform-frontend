@@ -4,7 +4,15 @@
 
 export const environment = {
   production: false,
-  secret_key: 'r8*Y#s1L$k9z!Pq2W@v3&Tx$7jL^Bm%Q'
+  secret_key: 'r8*Y#s1L$k9z!Pq2W@v3&Tx$7jL^Bm%Q',
+  apiGateway:   'http://localhost:8080/m3verificaciones/api/v1',
+  apiCompany:   'http://localhost:8081/m3verificaciones/api/v1',
+  apiMeter:     'http://localhost:8082/m3verificaciones/api/v1',
+  apiUser:      'http://localhost:8083/m3verificaciones/api/v1',
+  apiUserComp:  'http://localhost:8084/m3verificaciones/api/v1',
+  apiMessages:  'http://localhost:8085/m3verificaciones/api/v1',
+  apiConsumption:'http://localhost:8086/m3verificaciones/api/v1',
+  apiLora:   'http://localhost:8087/m3verificaciones/api/v1',
 };
 
 /*

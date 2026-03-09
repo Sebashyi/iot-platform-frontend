@@ -4,13 +4,14 @@ import { Observable } from 'rxjs';
 import { User } from '../api/user.model';
 import { map } from 'rxjs/operators';
 import { EncryptionService } from './encryption.service';
+import { environment } from '../../../environments/environment';
 
 @Injectable({
     providedIn: 'root'
 })
 
 export class UserService {
-    private readonly apiUrl = 'http://localhost:8083/m3verificaciones/api/v1/user';
+    private readonly apiUrl = `${environment.apiUser}/user`;
 
     constructor(private readonly http: HttpClient, private readonly encryptionService: EncryptionService ) { }
 

@@ -2,12 +2,13 @@ import { Injectable } from '@angular/core';
 import { HttpClient, HttpParams, HttpErrorResponse } from '@angular/common/http';
 import { Observable, throwError } from 'rxjs';
 import { catchError, map } from 'rxjs/operators';
+import { environment } from '../../../environments/environment';
 
 @Injectable({
     providedIn: 'root',
 })
 export class ModelService {
-    private readonly apiUrl = 'http://localhost:8082/m3verificaciones/api/v1/model';
+    private readonly apiUrl = `${environment.apiMeter}/model`;
 
     constructor(private readonly http: HttpClient) {}
 

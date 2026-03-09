@@ -2,12 +2,13 @@ import { Injectable } from '@angular/core';
 import { HttpClient, HttpParams } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { Company } from '../api/company.model';
+import { environment } from '../../../environments/environment';
 
 @Injectable({
     providedIn: 'root',
 })
 export class CompanyService {
-    private readonly baseUrl: string = 'http://localhost:8081/m3verificaciones/api/v1/company';
+    private readonly baseUrl: string = `${environment.apiCompany}/company`;
 
     constructor(private readonly http: HttpClient) { }
 

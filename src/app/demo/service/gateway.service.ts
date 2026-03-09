@@ -2,13 +2,14 @@ import { Injectable } from '@angular/core';
 import { HttpClient, HttpParams } from '@angular/common/http';
 import { Observable, throwError } from 'rxjs';
 import { Gateway } from '../api/gateway.model';
+import { environment } from '../../../environments/environment';
 
 @Injectable({
     providedIn: 'root'
 })
 export class GatewayService {
 
-    private readonly apiUrl = 'http://localhost:8080/m3verificaciones/api/v1/gateway';
+    private readonly apiUrl = `${environment.apiGateway}/gateway`;
 
     constructor(private readonly http: HttpClient) { }
 

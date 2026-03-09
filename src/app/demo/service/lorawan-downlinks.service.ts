@@ -2,6 +2,7 @@ import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
+import { environment } from '../../../environments/environment';
 
 // Interfaz para la respuesta del endpoint
 export interface DownlinkResponse {
@@ -14,7 +15,7 @@ export interface DownlinkResponse {
     providedIn: 'root',
 })
 export class LorawanDownlinksService {
-    private readonly apiUrl = 'http://localhost:8087/m3verificaciones/api/v1/command/sendDownlink';
+    private readonly apiUrl = `${environment.apiLora}/sendDownlink`;
 
     constructor(private readonly http: HttpClient) {}
 

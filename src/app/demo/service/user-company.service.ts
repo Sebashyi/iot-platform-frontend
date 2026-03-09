@@ -2,12 +2,13 @@ import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { UserCompany } from '../api/user-company.model';
+import { environment } from '../../../environments/environment';
 
 @Injectable({
     providedIn: 'root'
 })
 export class UserCompanyService {
-    private readonly apiUrl = 'http://localhost:8084/m3verificaciones/api/v1/user-company';
+    private readonly apiUrl = `${environment.apiUserComp}/user-company`;
 
     constructor(private readonly http: HttpClient) { }
     saveUserCompanyRelation(userCompany: UserCompany): Observable<any> {

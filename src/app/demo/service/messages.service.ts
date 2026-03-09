@@ -4,12 +4,13 @@ import { Observable } from 'rxjs';
 import { Message } from '../api/message.model';
 import { MessageDecoded } from '../api/message-decoded.model';
 import { map } from 'rxjs/operators';
+import { environment } from '../../../environments/environment';
 
 @Injectable({
     providedIn: 'root'
 })
 export class MessagesService {
-    private readonly apiUrl = 'http://localhost:8085/m3verificaciones/api/v1';
+    private readonly apiUrl = `${environment.apiGateway}`;
 
     constructor(private readonly http: HttpClient) { }
 
