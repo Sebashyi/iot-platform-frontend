@@ -10,7 +10,7 @@ import { environment } from '../../../environments/environment';
     providedIn: 'root'
 })
 export class MessagesService {
-    private readonly apiUrl = `${environment.apiGateway}`;
+    private readonly apiUrl = `${environment.apiMessages}`;
 
     constructor(private readonly http: HttpClient) { }
 
