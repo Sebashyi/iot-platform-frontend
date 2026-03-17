@@ -312,8 +312,6 @@ export class DetailMeterComponent implements OnInit {
             const data: Meter = await lastValueFrom(this.meterService.getMeterById(meterId));
 
             this.meter = data;
-            console.log('METER DATA:', JSON.stringify(this.meter, null, 2));
-            console.log('COMPANIES:', JSON.stringify(this.companies, null, 2));
 
             if (this.meter.lastCommunication) {
                 this.meter.lastCommunication = this.dateFormatService.formatDate(this.meter.lastCommunication) as any;
