@@ -21,8 +21,8 @@ interface GeoNames {
 })
 export class LocationService {
 
-    private readonly geoNamesUrl = 'http://api.geonames.org';
-    private readonly username = 'shadowmoon'; 
+    private readonly geoNamesUrl = 'https://secure.geonames.org';
+    private readonly username = 'carlosjoao19652'; 
 
     constructor(private readonly http: HttpClient) { }
 
