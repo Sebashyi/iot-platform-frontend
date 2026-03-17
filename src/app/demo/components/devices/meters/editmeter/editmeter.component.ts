@@ -203,13 +203,18 @@ export class EditMeterComponent implements OnInit, AfterViewInit {
         this.locationService.getCountries().subscribe(data => {
             this.countries = data;
         });
-        this.loadCompaniesMeters();
+        this.meterService.getMetersByCompany(this.companyKey).subscribe(data => {
+            this.meters = data;
+        });
         const meterId = this.route.snapshot.paramMap.get('id');
         if (meterId) {
-            this.brandService.getAllBrands().subscribe(data => {
-                this.dropdownBrandMeter = data;
+            this.companyService.getCompanies().subscribe(companies => {
+                this.companies = companies;
+                this.brandService.getAllBrands().subscribe(brands => {
+                    this.dropdownBrandMeter = brands;
+                    this.loadSelectedMeter(meterId);
+                });
             });
-            this.loadSelectedMeter(meterId);
         }
     }
 
@@ -419,6 +424,10 @@ export class EditMeterComponent implements OnInit, AfterViewInit {
                 this.selectedState = this.dropdownItemsState.find(item => item.code === this.meter.state.toString());
                 this.comunicationCheck = this.meter.typeCommunication.split(', ');
                 this.selectedRegion = this.dropdownItemsRegion.find(item => item.name === this.meter.region);
+                this.dropdownItemsSubRed = this.selectedRegion
+                    ? (this.regionSubredMap[this.selectedRegion.code] ?? [])
+                    : [];
+                this.selectedSubRed = this.dropdownItemsSubRed.find(item => item.name === this.meter.subRed);
                 this.valClassSupport = this.meter.classSupport;
                 this.selectedTypeProduct = this.dropdownItemsProductType.find(item => item.name === this.meter.typeProduct);
                 this.selectedSubRed = this.dropdownItemsSubRed.find(item => item.name === this.meter.subRed);
