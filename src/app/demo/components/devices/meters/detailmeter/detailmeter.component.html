@@ -189,17 +189,17 @@
                             </div>
                             <div class="field col-12 md:col-4" *ngIf="comunicationCheck.includes('LoRaWAN')">
                                 <label htmlFor="region" class="input-labels">Region</label>
-                                <input pInputText id="region" type="text" [(ngModel)]="selectedRegion.name"
+                                <input pInputText id="region" type="text" [value]="selectedRegion?.name || ''"
                                     placeholder="Region" readonly />
                             </div>
                             <div class="field col-12 md:col-4" *ngIf="comunicationCheck.includes('LoRaWAN')">
                                 <label htmlFor="typeProduct" class="input-labels">Tipo de Producto</label>
-                                <input pInputText id="typeProduct" type="text" [(ngModel)]="selectedTypeProduct.name"
+                                <input pInputText id="typeProduct" type="text" [value]="selectedTypeProduct?.name || ''"
                                     placeholder="Tipo de Producto" readonly />
                             </div>
                             <div class="field col-12 md:col-4" *ngIf="comunicationCheck.includes('LoRaWAN')">
                                 <label htmlFor="subred" class="input-labels">Subred</label>
-                                <input pInputText id="subRed" type="text" [(ngModel)]="selectedSubRed.name"
+                                <input pInputText id="subRed" type="text" [value]="selectedSubRed?.name || ''"
                                     placeholder="Sub Red" readonly />
                             </div>
                             <div class="field col-12 md:col-4" *ngIf="comunicationCheck.includes('LoRaWAN')">
@@ -235,8 +235,8 @@
                             </div>
                             <div class="field col-12 md:col-4" *ngIf="typeAutentification.includes('ABP')">
                                 <label htmlFor="app" class="input-labels">App SKey</label>
-                                <input pInputText id="appKey" type="text" [(ngModel)]="meter.appSkey"
-                                    placeholder="SKey" readonly />
+                                <input pInputText id="appKey" type="text" [(ngModel)]="meter.appSkey" placeholder="SKey"
+                                    readonly />
                             </div>
                             <div class="field col-12 md:col-4" *ngIf="typeAutentification.includes('ABP')">
                                 <label htmlFor="lastname2" class="input-labels">Nwk SKey</label>
