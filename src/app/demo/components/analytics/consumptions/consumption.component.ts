@@ -186,11 +186,9 @@ export class ConsumptionComponent implements OnInit {
 
         this.dataY = labels.map(hour => {
             const hourIndex = parseInt(hour.split(":")[0]);
-
-            return this.filteredData.find(item => {
-                const itemDate = new Date(item.date);
-                return itemDate.getHours() === hourIndex;
-            })?.consumption || 0;
+            return this.filteredData
+                .filter(item => new Date(item.date).getHours() === hourIndex)
+                .reduce((sum, item) => sum + item.consumption, 0);
         });
         this.chartData = {
             labels: labels,
@@ -234,7 +232,7 @@ export class ConsumptionComponent implements OnInit {
             if (!dailyConsumption[dateKey]) {
                 dailyConsumption[dateKey] = 0;
             }
-            dailyConsumption[dateKey] = item.consumption;
+            dailyConsumption[dateKey] += item.consumption;
         });
 
         const labels = Object.keys(dailyConsumption)
@@ -328,7 +326,7 @@ export class ConsumptionComponent implements OnInit {
             if (!monthlyConsumption[label]) {
                 monthlyConsumption[label] = 0;
             }
-            monthlyConsumption[label] = item.consumption;
+            monthlyConsumption[label] += item.consumption;
         });
 
         this.chartData = {
@@ -376,7 +374,7 @@ export class ConsumptionComponent implements OnInit {
                 yearlyConsumption[year] = 0;
             }
 
-            yearlyConsumption[year] = item.consumption;
+            yearlyConsumption[year] += item.consumption;
         });
 
         const labels = Object.keys(yearlyConsumption).sort((a, b) => +a - +b);
