@@ -197,7 +197,6 @@ export class DetailMeterComponent implements OnInit {
 
     ngOnInit(): void {
         const meterId = this.route.snapshot.paramMap.get('id');
-        this.loadCompaniesMeters();
         if (meterId) {
             this.loadSelectedMeter(meterId).then(() => {
                 this.getConsumptionForHours().then(() => {
@@ -238,9 +237,20 @@ export class DetailMeterComponent implements OnInit {
     }
 
     loadCompaniesMeters(): void {
+        const meterId = this.route.snapshot.paramMap.get('id');
+
         this.companyService.getCompanies().subscribe({
             next: data => {
                 this.companies = data;
+                // Now companies are loaded — safe to find selectedCompany
+                if (meterId) {
+                    this.loadSelectedMeter(meterId).then(() => {
+                        this.chartData = {
+                            labels: this.labelsX,
+                            datasets: [{ label: 'Consumo', data: this.dataY, fill: false, borderColor: '#42A5F5', tension: 0.1 }]
+                        };
+                    });
+                }
             },
             error: error => {
                 this.messageService.add({ severity: 'error', summary: 'Error', detail: 'No se pudo cargar las compañías.', life: 3000 });
@@ -248,9 +258,7 @@ export class DetailMeterComponent implements OnInit {
         });
 
         this.meterService.getMetersByCompany(this.companyKey).subscribe({
-            next: data => {
-                this.meters = data;
-            },
+            next: data => { this.meters = data; },
             error: error => {
                 this.messageService.add({ severity: 'error', summary: 'Error', detail: 'No se pudo cargar los medidores.', life: 3000 });
             }
