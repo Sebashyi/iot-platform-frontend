@@ -22,7 +22,7 @@ interface GeoNames {
 export class LocationService {
 
     private readonly geoNamesUrl = 'https://secure.geonames.org';
-    private readonly username = 'carlosjoao19652'; 
+    private readonly username = 'shadowmoon'; 
 
     constructor(private readonly http: HttpClient) { }
 
