@@ -135,12 +135,38 @@ export class RegisterMeterComponent implements OnInit, AfterViewInit {
         { name: 'Zigbee', code: 'ZIG' }
     ];
 
-    dropdownItemsSubRed = [
-        { name: 'Subred A', code: 'A' },
-        { name: 'Subred B', code: 'B' },
-        { name: 'Subred C', code: 'C' },
-        { name: 'Subred D', code: 'D' }
-    ];
+    dropdownItemsSubRed: { name: string; code: string }[] = [];
+
+    private readonly regionSubredMap: { [key: string]: { name: string; code: string }[] } = {
+        'CN470': [
+            { name: 'CH_00-07', code: 'CH_00-07' },
+            { name: 'CH_08-15', code: 'CH_08-15' },
+            { name: 'CH_16-23', code: 'CH_16-23' },
+            { name: 'CH_24-31', code: 'CH_24-31' },
+            { name: 'CH_32-39', code: 'CH_32-39' },
+            { name: 'CH_40-47', code: 'CH_40-47' },
+            { name: 'CH_48-55', code: 'CH_48-55' },
+            { name: 'CH_56-63', code: 'CH_56-63' },
+        ],
+        'CN470PREQUEL': [{ name: 'CH_00-07', code: 'CH_00-07' }],
+        'CN470PHOENIX': [{ name: 'CH_00-07', code: 'CH_00-07' }],
+        'CN470ALID': [{ name: 'CH_08-15', code: 'CH_08-15' }],
+        'CN470ALIS': [{ name: 'CH_08-15', code: 'CH_08-15' }],
+        'AS923': [{ name: 'CH_00-07', code: 'CH_00-07' }],
+        'AS923MYS': [{ name: 'CH_00-07', code: 'CH_00-07' }],
+        'AS923IND': [{ name: 'CH_00-07', code: 'CH_00-07' }],
+        'EU868': [{ name: 'CH_00-07', code: 'CH_00-07' }],
+        'EU433': [{ name: 'CH_00-07', code: 'CH_00-07' }],
+        'US915': [{ name: 'CH_00-07_64', code: 'CH_00-07_64' }],
+        'AU915': [
+            { name: 'CH_00-07_64', code: 'CH_00-07_64' },
+            { name: 'CH_08-15_65', code: 'CH_08-15_65' },
+        ],
+        'IN865': [{ name: 'CH_00-07', code: 'CH_00-07' }],
+        'KR920': [{ name: 'CH_00-07', code: 'CH_00-07' }],
+        'RU864': [{ name: 'CH_00-07', code: 'CH_00-07' }],
+        'ID920': [{ name: 'CH_00-07', code: 'CH_00-07' }],
+    };
 
     cities1: any[] = [];
     cities2: any[] = [];
@@ -196,6 +222,13 @@ export class RegisterMeterComponent implements OnInit, AfterViewInit {
             title: 'Arrastra el marcador'
         });
         this.addMapEventListeners();
+    }
+
+    onRegionChange(): void {
+        this.selectedSubRed = null;
+        this.dropdownItemsSubRed = this.selectedRegion
+            ? (this.regionSubredMap[this.selectedRegion.code] ?? [])
+            : [];
     }
 
     addMapEventListeners(): void {

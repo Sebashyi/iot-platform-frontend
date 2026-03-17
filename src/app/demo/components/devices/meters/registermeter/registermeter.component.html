@@ -56,7 +56,7 @@
                 </div>
                 <div class="field col-12 md:col-4">
                     <label htmlFor="detail" class="input-labels">Detalle</label>
-                    <input pInputText id="detail" type="text" [(ngModel)]="meter.detail" placeholder="(Opcional)"/>
+                    <input pInputText id="detail" type="text" [(ngModel)]="meter.detail" placeholder="(Opcional)" />
                 </div>
             </div>
             <div class="p-fluid p-formgrid grid">
@@ -160,7 +160,8 @@
                 <div class="field col-12 md:col-4">
                     <label htmlFor="region" class="input-labels">Region</label>
                     <p-dropdown [options]="dropdownItemsRegion" optionLabel="name" [(ngModel)]="selectedRegion"
-                        id="regionSelect" placeholder="Seleccione una region"></p-dropdown>
+                        id="regionSelect" placeholder="Seleccione una region"
+                        (onChange)="onRegionChange()"></p-dropdown>
                 </div>
                 <div class="field col-12 md:col-4">
                     <label htmlFor="typeProduct" class="input-labels">Tipo de Producto</label>
@@ -194,8 +195,7 @@
                 </div>
                 <div class="field col-12 md:col-4" *ngIf="typeAutentification.includes('OTA')">
                     <label htmlFor="lastname2" class="input-labels">App Key</label>
-                    <input pInputText id="appKey" type="text" [(ngModel)]="meter.appKey"
-                        placeholder="Ingrese un Key" />
+                    <input pInputText id="appKey" type="text" [(ngModel)]="meter.appKey" placeholder="Ingrese un Key" />
                 </div>
                 <div class="field col-12 md:col-4" *ngIf="typeAutentification.includes('ABP')">
                     <label htmlFor="devAddr" class="input-labels">DevAddr</label>
