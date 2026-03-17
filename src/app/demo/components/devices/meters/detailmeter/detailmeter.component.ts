@@ -222,10 +222,34 @@ export class DetailMeterComponent implements OnInit {
     ) { }
 
     ngOnInit(): void {
-        this.loadCompaniesMeters();
         this.locationService.getCountries().subscribe(data => {
             this.countries = data;
         });
+
+        const meterId = this.route.snapshot.paramMap.get('id');
+        if (meterId) {
+            this.companyService.getCompanies().subscribe(companies => {
+                this.companies = companies;
+                this.loadSelectedMeter(meterId).then(() => {
+                    this.getConsumptionForHours().then(() => {
+                        this.chartData = {
+                            labels: this.labelsX,
+                            datasets: [{ label: 'Consumo', data: this.dataY, fill: false, borderColor: '#42A5F5', tension: 0.1 }]
+                        };
+                    });
+                });
+            });
+            this.meterService.getMetersByCompany(this.companyKey).subscribe(data => {
+                this.meters = data;
+            });
+        } else {
+            this.getConsumptionForHours().then(() => {
+                this.chartData = {
+                    labels: this.labelsX,
+                    datasets: [{ label: 'Consumo', data: this.dataY, fill: false, borderColor: '#42A5F5', tension: 0.1 }]
+                };
+            });
+        }
     }
 
     onGoBack(): void {
