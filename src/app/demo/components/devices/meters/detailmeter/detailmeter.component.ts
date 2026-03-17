@@ -111,12 +111,38 @@ export class DetailMeterComponent implements OnInit {
         { name: 'Bluetooth', code: 'BLU' },
         { name: 'Zigbee', code: 'ZIG' }
     ];
-    dropdownItemsSubRed = [
-        { name: 'Subred A', code: 'A' },
-        { name: 'Subred B', code: 'B' },
-        { name: 'Subred C', code: 'C' },
-        { name: 'Subred D', code: 'D' }
-    ];
+    dropdownItemsSubRed: { name: string; code: string }[] = [];
+
+    private readonly regionSubredMap: { [key: string]: { name: string; code: string }[] } = {
+        'CN470': [
+            { name: 'CH_00-07', code: 'CH_00-07' },
+            { name: 'CH_08-15', code: 'CH_08-15' },
+            { name: 'CH_16-23', code: 'CH_16-23' },
+            { name: 'CH_24-31', code: 'CH_24-31' },
+            { name: 'CH_32-39', code: 'CH_32-39' },
+            { name: 'CH_40-47', code: 'CH_40-47' },
+            { name: 'CH_48-55', code: 'CH_48-55' },
+            { name: 'CH_56-63', code: 'CH_56-63' },
+        ],
+        'CN470PREQUEL': [{ name: 'CH_00-07', code: 'CH_00-07' }],
+        'CN470PHOENIX': [{ name: 'CH_00-07', code: 'CH_00-07' }],
+        'CN470ALID': [{ name: 'CH_08-15', code: 'CH_08-15' }],
+        'CN470ALIS': [{ name: 'CH_08-15', code: 'CH_08-15' }],
+        'AS923': [{ name: 'CH_00-07', code: 'CH_00-07' }],
+        'AS923MYS': [{ name: 'CH_00-07', code: 'CH_00-07' }],
+        'AS923IND': [{ name: 'CH_00-07', code: 'CH_00-07' }],
+        'EU868': [{ name: 'CH_00-07', code: 'CH_00-07' }],
+        'EU433': [{ name: 'CH_00-07', code: 'CH_00-07' }],
+        'US915': [{ name: 'CH_00-07_64', code: 'CH_00-07_64' }],
+        'AU915': [
+            { name: 'CH_00-07_64', code: 'CH_00-07_64' },
+            { name: 'CH_08-15_65', code: 'CH_08-15_65' },
+        ],
+        'IN865': [{ name: 'CH_00-07', code: 'CH_00-07' }],
+        'KR920': [{ name: 'CH_00-07', code: 'CH_00-07' }],
+        'RU864': [{ name: 'CH_00-07', code: 'CH_00-07' }],
+        'ID920': [{ name: 'CH_00-07', code: 'CH_00-07' }],
+    };
     labelsX: any;
     dataY: any[] = [];
     cities1: any[] = [];
@@ -196,37 +222,7 @@ export class DetailMeterComponent implements OnInit {
     ) { }
 
     ngOnInit(): void {
-        const meterId = this.route.snapshot.paramMap.get('id');
-        if (meterId) {
-            this.loadSelectedMeter(meterId).then(() => {
-                this.getConsumptionForHours().then(() => {
-                    this.chartData = {
-                        labels: this.labelsX,
-                        datasets: [{
-                            label: 'Consumo',
-                            data: this.dataY,
-                            fill: false,
-                            borderColor: '#42A5F5',
-                            tension: 0.1
-                        }]
-                    };
-                });
-            });
-        } else {
-            this.getConsumptionForHours().then(() => {
-                this.chartData = {
-                    labels: this.labelsX,
-                    datasets: [{
-                        label: 'Consumo',
-                        data: this.dataY,
-                        fill: false,
-                        borderColor: '#42A5F5',
-                        tension: 0.1
-                    }]
-                };
-            });
-        }
-
+        this.loadCompaniesMeters();
         this.locationService.getCountries().subscribe(data => {
             this.countries = data;
         });
@@ -236,15 +232,30 @@ export class DetailMeterComponent implements OnInit {
         this.location.back();
     }
 
+    onRegionChange(): void {
+        this.selectedSubRed = null;
+        this.dropdownItemsSubRed = this.selectedRegion
+            ? (this.regionSubredMap[this.selectedRegion.code] ?? [])
+            : [];
+    }
+
     loadCompaniesMeters(): void {
         const meterId = this.route.snapshot.paramMap.get('id');
 
         this.companyService.getCompanies().subscribe({
             next: data => {
                 this.companies = data;
-                // Now companies are loaded — safe to find selectedCompany
                 if (meterId) {
                     this.loadSelectedMeter(meterId).then(() => {
+                        this.getConsumptionForHours().then(() => {
+                            this.chartData = {
+                                labels: this.labelsX,
+                                datasets: [{ label: 'Consumo', data: this.dataY, fill: false, borderColor: '#42A5F5', tension: 0.1 }]
+                            };
+                        });
+                    });
+                } else {
+                    this.getConsumptionForHours().then(() => {
                         this.chartData = {
                             labels: this.labelsX,
                             datasets: [{ label: 'Consumo', data: this.dataY, fill: false, borderColor: '#42A5F5', tension: 0.1 }]
@@ -294,6 +305,9 @@ export class DetailMeterComponent implements OnInit {
             this.selectedState = this.dropdownItemsState.find(item => item.code === this.meter.state.toString());
             this.comunicationCheck = this.meter.typeCommunication.split(', ');
             this.selectedRegion = this.dropdownItemsRegion.find(item => item.name === this.meter.region);
+            this.dropdownItemsSubRed = this.selectedRegion
+                ? (this.regionSubredMap[this.selectedRegion.code] ?? [])
+                : [];
             this.selectedTypeProduct = this.dropdownItemsProductType.find(item => item.name === this.meter.typeProduct);
             this.selectedSubRed = this.dropdownItemsSubRed.find(item => item.name === this.meter.subRed);
             this.selectedGateway = this.gateways.find(item => item.uniqueKey === this.meter.gatewayUniqueKey);
