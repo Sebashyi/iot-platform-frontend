@@ -50,11 +50,6 @@
                         placeholder="Seleccione una empresa" (onChange)="loadGatewaysByCompany()"></p-dropdown>
                 </div>
                 <div class="field col-12 md:col-4">
-                    <label htmlFor="devEui" class="input-labels">Dev EUI</label>
-                    <input pInputText id="devEui" type="text" [(ngModel)]="meter.devEui"
-                        placeholder="Ingrese un Dev EUI" />
-                </div>
-                <div class="field col-12 md:col-4">
                     <label htmlFor="detail" class="input-labels">Detalle</label>
                     <input pInputText id="detail" type="text" [(ngModel)]="meter.detail" placeholder="(Opcional)" />
                 </div>
@@ -109,13 +104,12 @@
                                 <label for="sf">GPRS</label>
                             </div>
                         </div>
-                        <!--
                         <div class="col-12 md:col-4">
                             <div class="field-checkbox">
-                                <p-checkbox name="group1" value="NB-IoT" [(ngModel)]="comunicationCheck" id="nb"></p-checkbox>
-                                <label for="la">NB-IoT</label>
+                                <p-checkbox name="group1" value="4G" [(ngModel)]="comunicationCheck" id="4g"></p-checkbox>
+                                <label for="4g">4G</label>
                             </div>
-                        </div>-->
+                        </div>
                         <div class="col-12 md:col-4">
                             <div class="field-checkbox">
                                 <p-checkbox name="group1" value="Mbus" [(ngModel)]="comunicationCheck"
@@ -131,6 +125,11 @@
     <div class="col-12" *ngIf="comunicationCheck.includes('LoRaWAN')">
         <div class="card">
             <div class="p-fluid p-formgrid grid">
+                <div class="field col-12 md:col-4">
+                    <label htmlFor="devEui" class="input-labels">Dev EUI</label>
+                    <input pInputText id="devEui" type="text" [(ngModel)]="meter.devEui"
+                        placeholder="Ingrese un Dev EUI" />
+                </div>
                 <div class="field col-12 md:col-4">
                     <label htmlFor="firstname2" class="input-labels">Clase de apoyo</label>
                     <div class="grid formgrid">
@@ -173,6 +172,11 @@
                     <label htmlFor="subred" class="input-labels">Subred</label>
                     <p-dropdown [options]="dropdownItemsSubRed" optionLabel="name" [(ngModel)]="selectedSubRed"
                         id="subRedSelect" placeholder="Seleccione una sub-red"></p-dropdown>
+                </div>
+                <div class="field col-12 md:col-4">
+                    <label htmlFor="appEui" class="input-labels">Aplicación EUI</label>
+                    <input pInputText id="appEui" type="text" [(ngModel)]="meter.euiAplication"
+                        placeholder="Ingrese un App EUI" />
                 </div>
                 <div class="field col-12 md:col-4">
                     <label htmlFor="firstname2" class="input-labels">Tipo de autenticación</label>
@@ -253,6 +257,16 @@
                     <label htmlFor="serialNumberGprs" class="input-labels">Número de serie</label>
                     <input pInputText id="serialNumberGprs" type="text" [(ngModel)]="meter.serialNumberGprs"
                         placeholder="Ingrese el numero de serie" />
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="col-12" *ngIf="comunicationCheck.includes('4G')">
+        <div class="card">
+            <div class="p-fluid p-formgrid grid">
+                <div class="field col-12 md:col-4">
+                    <label htmlFor="imei" class="input-labels">IMEI</label>
+                    <input pInputText id="imei" type="text" [(ngModel)]="meter.imei" placeholder="Ingrese un IMEI" />
                 </div>
             </div>
         </div>
