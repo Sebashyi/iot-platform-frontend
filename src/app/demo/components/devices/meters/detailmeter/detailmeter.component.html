@@ -46,11 +46,6 @@
                                     placeholder="Nombre de la Empresa" readonly />
                             </div>
                             <div class="field col-12 md:col-4">
-                                <label htmlFor="devEui" class="input-labels">Dev EUI</label>
-                                <input pInputText id="devEui" type="text" [(ngModel)]="meter.devEui"
-                                    placeholder="Dev EUI del medidor" readonly />
-                            </div>
-                            <div class="field col-12 md:col-4">
                                 <label htmlFor="detail" class="input-labels">Detalle</label>
                                 <input pInputText id="detail" type="text" [(ngModel)]="meter.detail"
                                     placeholder="Detalle del medidor" readonly />
@@ -158,6 +153,13 @@
                                             <label for="mbus">Mbus</label>
                                         </div>
                                     </div>
+                                    <div class="col-12 md:col-4">
+                                        <div class="field-checkbox">
+                                            <p-checkbox name="group1" value="4G" [(ngModel)]="comunicationCheck"
+                                                id="4g" [disabled]="true"></p-checkbox>
+                                            <label for="4g">4G</label>
+                                        </div>
+                                    </div>
                                 </div>
                             </div>
 
@@ -254,6 +256,11 @@
                                     placeholder="Direccion GPRS" readonly />
                             </div>
                             <div class="field col-12 md:col-4" *ngIf="comunicationCheck.includes('NB-IoT')">
+                                <label htmlFor="imei" class="input-labels">IMEI</label>
+                                <input pInputText id="imei" type="text" [(ngModel)]="meter.imei" placeholder="IMEI"
+                                    readonly />
+                            </div>
+                            <div class="field col-12 md:col-4" *ngIf="comunicationCheck.includes('4G')">
                                 <label htmlFor="imei" class="input-labels">IMEI</label>
                                 <input pInputText id="imei" type="text" [(ngModel)]="meter.imei" placeholder="IMEI"
                                     readonly />
