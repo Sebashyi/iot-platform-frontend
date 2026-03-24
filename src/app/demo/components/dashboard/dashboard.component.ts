@@ -389,17 +389,20 @@ export class DashboardComponent implements OnInit, OnDestroy {
         ];
 
         this.messagesService.getAlertMessagesByCompany(this.companyUniqueKey).subscribe({
-            next: (data) => {
-                console.log('Alert messages', data);
-                this.messages = data.map(msg => ({
-                    uniqueKey: msg.uniqueKey,
-                    createdAt: msg.createdAt ? this.dateFormatService.formatDate(msg.createdAt) : '',
-                    serial: msg.serial,
-                    model: msg.model,
-                    alerts: alarmFields
-                        .filter(alarm => (msg as any)[alarm.key] === true)
-                        .map(alarm => alarm.label)
-                }));
+            next: async (data) => {
+                const messagePromises = data.map(async msg => {
+                    const meterDetails = await this.meterService.getMeterDetailsByDevEui(msg.devEui).toPromise();
+                    return {
+                        uniqueKey: msg.uniqueKey,
+                        createdAt: msg.createdAt ? this.dateFormatService.formatDate(msg.createdAt) : '',
+                        serial: meterDetails.serial,
+                        model: meterDetails.model,
+                        alerts: alarmFields
+                            .filter(alarm => (msg as any)[alarm.key] === true)
+                            .map(alarm => alarm.label)
+                    };
+                });
+                this.messages = await Promise.all(messagePromises);
             },
             error: (error) => {
                 if (error.status === 404) {
