@@ -67,4 +67,8 @@ export class ConsumptionService {
         const body = { selectedFields };
         return this.http.post(url, body, { responseType: 'blob' });
     }
+
+    getConsumptionByDayByCompany(companyUniqueKey: string): Observable<any[]> {
+        return this.http.get<any[]>(`${this.baseUrl}/consumption-day/by-company/${companyUniqueKey}`);
+    }
 }

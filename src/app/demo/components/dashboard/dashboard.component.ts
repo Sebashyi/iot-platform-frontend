@@ -476,7 +476,7 @@ export class DashboardComponent implements OnInit, OnDestroy {
     async loadConsumptionByDay(): Promise<void> {
         try {
             const data = await firstValueFrom(
-                this.consumptionService.getAllConsumptionByDay()
+                this.consumptionService.getConsumptionByDayByCompany(this.companyUniqueKey)
             );
 
             this.averageConsumptions = data.map(item => ({
@@ -485,8 +485,12 @@ export class DashboardComponent implements OnInit, OnDestroy {
                 devEui: item.devEui,
             }));
 
-        } catch (error) {
-            this.messageService.add({ severity: 'error', summary: 'Error', detail: 'No se pudo cargar los consumos por día.', life: 3000 });
+        } catch (error: any) {
+            if (error.status === 404) {
+                this.messageService.add({ severity: 'warn', summary: 'Advertencia', detail: 'No se encontraron consumos por día para la empresa.', life: 3000 });
+            } else {
+                this.messageService.add({ severity: 'error', summary: 'Error', detail: 'No se pudo cargar los consumos por día.', life: 3000 });
+            }
         }
     }
 
