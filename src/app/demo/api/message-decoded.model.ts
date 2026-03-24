@@ -26,3 +26,28 @@ export interface MessageDecoded {
     devEui: string;
     rawData: string;
 }
+
+export interface MessageDecodedAlert {
+    uniqueKey?: string;
+    devEui: string;
+    createdAt: Date;
+    // Alarmas comunes a ambas tablas
+    lowBatteryAlarm: boolean;
+    emptyPipeAlarm: boolean;
+    reverseFlowAlarm: boolean;
+    overRangeAlarm: boolean;
+    overTempratureAlarm: boolean;
+    eepromError: boolean;
+    leakageAlarm: boolean;
+    burstAlarm: boolean;
+    tamperAlarm: boolean;
+    freezingAlarm: boolean;
+    // Campos específicos Bove
+    volumeData?: number;
+    valveState?: string;
+    // Campos específicos Younio
+    reading?: number;
+    serial?: string;
+    voltage?: number;
+    alarmas?: string;
+}

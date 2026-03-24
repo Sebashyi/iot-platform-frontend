@@ -388,32 +388,18 @@ export class DashboardComponent implements OnInit, OnDestroy {
             { key: 'freezingAlarm', label: 'Congelamiento' },
         ];
 
-        this.messagesService.getAllMessagesDecoded().subscribe({
+        this.messagesService.getAlertMessagesByCompany(this.companyUniqueKey).subscribe({
             next: (data) => {
-                const messagePromises = data.map(async messageDecoded => {
-                    if (messageDecoded.createdAt) {
-                        messageDecoded.createdAt = this.dateFormatService.formatDate(messageDecoded.createdAt) as any;
-                    }
-
-                    const meterDetails = await this.meterService.getMeterDetailsByDevEui(messageDecoded.devEui).toPromise();
-
-                    const activeAlerts = alarmFields
-                        .filter(alarm => (messageDecoded as any)[alarm.key] === true)
-                        .map(alarm => alarm.label);
-
-                    return {
-                        uniqueKey: messageDecoded.uniqueKey,
-                        createdAt: messageDecoded.createdAt,
-                        serial: meterDetails.serial,
-                        model: meterDetails.model,
-                        alerts: activeAlerts
-                    };
-                });
-                Promise.all(messagePromises).then(results => {
-                    this.messages = results.filter(msg => msg.alerts.length > 0);
-                });
+                this.messages = data.map(msg => ({
+                    uniqueKey: msg.uniqueKey,
+                    createdAt: msg.createdAt ? this.dateFormatService.formatDate(msg.createdAt) : '',
+                    serial: msg.serial,
+                    alerts: alarmFields
+                        .filter(alarm => (msg as any)[alarm.key] === true)
+                        .map(alarm => alarm.label)
+                }));
             },
-            error: (error) => {
+            error: () => {
                 this.messageService.add({ severity: 'error', summary: 'Error', detail: 'No se pudo establecer conexión con el servidor', life: 3000 });
             }
         });

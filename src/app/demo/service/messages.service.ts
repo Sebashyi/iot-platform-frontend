@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import { HttpClient, HttpParams, HttpHeaders } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { Message } from '../api/message.model';
-import { MessageDecoded } from '../api/message-decoded.model';
+import { MessageDecoded, MessageDecodedAlert } from '../api/message-decoded.model';
 import { map } from 'rxjs/operators';
 import { environment } from '../../../environments/environment';
 
@@ -82,7 +82,13 @@ export class MessagesService {
         const headers = new HttpHeaders({
             'Content-Type': 'application/json'
         });
-        
+
         return this.http.post<Message[]>(`${this.apiUrl}/messages/by-serials`, serials, { headers });
+    }
+
+    getAlertMessagesByCompany(companyUniqueKey: string): Observable<MessageDecodedAlert[]> {
+        return this.http.get<MessageDecodedAlert[]>(
+            `${this.apiUrl}/messages-full-join/alerts/${companyUniqueKey}`
+        );
     }
 }
