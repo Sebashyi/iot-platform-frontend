@@ -377,6 +377,7 @@ export class DashboardComponent implements OnInit, OnDestroy {
     getMessages() {
         this.messagesService.getAllMessagesDecoded().subscribe({
             next: (data) => {
+                console.log('Últimos mensajes (última comunicación) desde backend:', data);
                 const messagePromises = data.slice(0, 5).map(async messageDecoded => {
                     if (messageDecoded.createdAt) {
                         messageDecoded.createdAt = this.dateFormatService.formatDate(messageDecoded.createdAt) as any;
