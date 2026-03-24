@@ -399,8 +399,12 @@ export class DashboardComponent implements OnInit, OnDestroy {
                         .map(alarm => alarm.label)
                 }));
             },
-            error: () => {
-                this.messageService.add({ severity: 'error', summary: 'Error', detail: 'No se pudo establecer conexión con el servidor', life: 3000 });
+            error: (error) => {
+                if (error.status === 404) {
+                    this.messageService.add({ severity: 'warn', summary: 'Advertencia', detail: 'No se encontraron nuevas alertas.', life: 3000 });
+                } else {
+                    this.messageService.add({ severity: 'error', summary: 'Error', detail: 'No se pudo establecer conexión con el servidor', life: 3000 });
+                }
             }
         });
     }
