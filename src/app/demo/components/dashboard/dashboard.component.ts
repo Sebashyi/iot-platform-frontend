@@ -390,6 +390,7 @@ export class DashboardComponent implements OnInit, OnDestroy {
 
         this.messagesService.getAlertMessagesByCompany(this.companyUniqueKey).subscribe({
             next: (data) => {
+                console.log('Alert messages', data);
                 this.messages = data.map(msg => ({
                     uniqueKey: msg.uniqueKey,
                     createdAt: msg.createdAt ? this.dateFormatService.formatDate(msg.createdAt) : '',
