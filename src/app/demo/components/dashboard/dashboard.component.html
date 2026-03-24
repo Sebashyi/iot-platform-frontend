@@ -38,7 +38,7 @@
                 style="max-height: 420px; overflow-y: auto;">
                 <li *ngFor="let msg of messages; trackBy: trackByFn"
                     class="flex align-items-start py-2 border-bottom-1 surface-border cursor-pointer"
-                    [routerLink]="['/devices/meter/detail-message', msg.uniqueKey]">
+                    [routerLink]="['/devices/meter/detail-message', msg.uniqueKey]" [queryParams]="{ model: msg.model }">
 
                     <div class="w-3rem h-3rem flex align-items-center justify-content-center border-circle mr-3 flex-shrink-0"
                         [ngClass]="msg.alerts.length > 0 ? 'bg-orange-100' : 'bg-green-100'">

@@ -405,6 +405,7 @@ export class DashboardComponent implements OnInit, OnDestroy {
                         uniqueKey: messageDecoded.uniqueKey,
                         createdAt: messageDecoded.createdAt,
                         serial: meterDetails.serial,
+                        model: meterDetails.model,
                         alerts: activeAlerts
                     };
                 });
