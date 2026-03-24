@@ -32,23 +32,31 @@
     <div class="col-12 md:col-6">
         <div class="card p-fluid">
             <div class="flex align-items-center justify-content-between mb-4">
-                <h5>Mensajes de Comunicación</h5>
+                <h5>Últimas Alertas</h5>
             </div>
-            <ul *ngIf="messages.length > 0; else noMessages" class="p-0 m-0 list-none">
-                <li *ngFor="let msg of messages; trackBy: trackByFn" 
-                    class="flex align-items-center py-2 border-bottom-1 surface-border cursor-pointer"
+            <ul *ngIf="messages.length > 0; else noMessages" class="p-0 m-0 list-none"
+                style="max-height: 420px; overflow-y: auto;">
+                <li *ngFor="let msg of messages; trackBy: trackByFn"
+                    class="flex align-items-start py-2 border-bottom-1 surface-border cursor-pointer"
                     [routerLink]="['/devices/meter/detail-message', msg.uniqueKey]">
-                    
-                    <div class="w-3rem h-3rem flex align-items-center justify-content-center bg-orange-100 border-circle mr-3 flex-shrink-0">
-                        <i class="pi pi-exclamation-triangle text-xl text-orange-500"></i>
+
+                    <div class="w-3rem h-3rem flex align-items-center justify-content-center border-circle mr-3 flex-shrink-0"
+                        [ngClass]="msg.alerts.length > 0 ? 'bg-orange-100' : 'bg-green-100'">
+                        <i class="text-xl"
+                            [ngClass]="msg.alerts.length > 0 ? 'pi pi-exclamation-triangle text-orange-500' : 'pi pi-check text-green-500'"></i>
                     </div>
-                    
-                    <span class="text-900 line-height-3">
-                        {{ msg.serial }}
-                        <span class="text-700"> {{ msg.message }} ha enviado un mensaje el día 
-                            <span class="text-blue-500">{{ msg.createdAt }}</span>
-                        </span>
-                    </span>
+
+                    <div class="flex flex-column">
+                        <span class="text-900 font-medium">{{ msg.serial }}</span>
+                        <span class="text-500 text-sm mb-1">{{ msg.createdAt }}</span>
+                        <div *ngIf="msg.alerts.length > 0" class="flex flex-wrap gap-1">
+                            <span *ngFor="let alert of msg.alerts"
+                                class="text-xs border-round px-2 py-1 bg-orange-100 text-orange-700">
+                                {{ alert }}
+                            </span>
+                        </div>
+                        <span *ngIf="msg.alerts.length === 0" class="text-green-500 text-sm">Sin alertas</span>
+                    </div>
                 </li>
             </ul>
             <ng-template #noMessages>
@@ -57,7 +65,7 @@
                     <p>No existen nuevos mensajes</p>
                 </div>
             </ng-template>
-        </div>        
+        </div>
         <div class="card p-fluid">
             <div class="card mb-0">
                 <h5>Consumo Promedio</h5>
@@ -66,11 +74,14 @@
                         <span class="block text-500 font-medium mb-3">Metros Cúbicos</span>
                         <div class="text-900 font-medium text-xl">{{ averageConsumption.toFixed(3) }}</div>
                     </div>
-                    <div class="flex align-items-center justify-content-center bg-blue-100 border-round" [ngStyle]="{width: '2.5rem', height: '2.5rem'}">
+                    <div class="flex align-items-center justify-content-center bg-blue-100 border-round"
+                        [ngStyle]="{width: '2.5rem', height: '2.5rem'}">
                         <i class="pi pi-chart-line text-blue-500 text-xl"></i>
                     </div>
                 </div>
-                <span [ngClass]="{'text-green-500': differenceFromLastPeriod >= 0, 'text-red-500': differenceFromLastPeriod < 0}" class="font-medium">
+                <span
+                    [ngClass]="{'text-green-500': differenceFromLastPeriod >= 0, 'text-red-500': differenceFromLastPeriod < 0}"
+                    class="font-medium">
                     {{ differenceFromLastPeriod.toFixed(3) + ' m³ consumidos ' }}
                 </span>
                 <span class="text-500">el día de hoy</span>

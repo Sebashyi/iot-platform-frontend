@@ -375,24 +375,41 @@ export class DashboardComponent implements OnInit, OnDestroy {
     }
 
     getMessages() {
+        const alarmFields = [
+            { key: 'lowBatteryAlarm', label: 'Batería baja' },
+            { key: 'emptyPipeAlarm', label: 'Tubería vacía' },
+            { key: 'reverseFlowAlarm', label: 'Flujo inverso' },
+            { key: 'overRangeAlarm', label: 'Fuera de rango' },
+            { key: 'overTempratureAlarm', label: 'Sobre temperatura' },
+            { key: 'eepromError', label: 'Error EEPROM' },
+            { key: 'leakageAlarm', label: 'Fuga' },
+            { key: 'burstAlarm', label: 'Ruptura' },
+            { key: 'tamperAlarm', label: 'Manipulación' },
+            { key: 'freezingAlarm', label: 'Congelamiento' },
+        ];
+
         this.messagesService.getAllMessagesDecoded().subscribe({
             next: (data) => {
-                console.log('Últimos mensajes (última comunicación) desde backend:', data);
-                const messagePromises = data.slice(0, 5).map(async messageDecoded => {
+                const messagePromises = data.map(async messageDecoded => {
                     if (messageDecoded.createdAt) {
                         messageDecoded.createdAt = this.dateFormatService.formatDate(messageDecoded.createdAt) as any;
                     }
 
-                    const devEui = messageDecoded.devEui;
-                    const meterDetails = await this.meterService.getMeterDetailsByDevEui(devEui).toPromise();
+                    const meterDetails = await this.meterService.getMeterDetailsByDevEui(messageDecoded.devEui).toPromise();
+
+                    const activeAlerts = alarmFields
+                        .filter(alarm => (messageDecoded as any)[alarm.key] === true)
+                        .map(alarm => alarm.label);
 
                     return {
+                        uniqueKey: messageDecoded.uniqueKey,
                         createdAt: messageDecoded.createdAt,
-                        serial: meterDetails.serial
+                        serial: meterDetails.serial,
+                        alerts: activeAlerts
                     };
                 });
                 Promise.all(messagePromises).then(results => {
-                    this.messages = results;
+                    this.messages = results.filter(msg => msg.alerts.length > 0);
                 });
             },
             error: (error) => {
@@ -485,7 +502,7 @@ export class DashboardComponent implements OnInit, OnDestroy {
     calculateAverageConsumption(dailyConsumption: { [key: string]: number }): void {
         const today = new Date();
         const todayKey = `${today.getDate()}-${today.getMonth() + 1}-${today.getFullYear()}`;
-    
+
         const todayConsumption = dailyConsumption[todayKey] || 0;
 
         const uniqueDevEuis = new Set(
@@ -498,13 +515,13 @@ export class DashboardComponent implements OnInit, OnDestroy {
                 })
                 .map(item => item.devEui)
         );
-    
+
         const numberOfMeters = uniqueDevEuis.size;
-    
+
         this.averageConsumption = numberOfMeters > 0 ? todayConsumption / numberOfMeters : 0;
 
         this.averageConsumption = parseFloat(this.averageConsumption.toFixed(3));
-    
+
         this.differenceFromLastPeriod = todayConsumption;
     }
 }
