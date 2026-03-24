@@ -394,6 +394,7 @@ export class DashboardComponent implements OnInit, OnDestroy {
                     uniqueKey: msg.uniqueKey,
                     createdAt: msg.createdAt ? this.dateFormatService.formatDate(msg.createdAt) : '',
                     serial: msg.serial,
+                    model: msg.model,
                     alerts: alarmFields
                         .filter(alarm => (msg as any)[alarm.key] === true)
                         .map(alarm => alarm.label)

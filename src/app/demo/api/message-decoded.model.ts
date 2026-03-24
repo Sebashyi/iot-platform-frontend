@@ -31,6 +31,7 @@ export interface MessageDecodedAlert {
     uniqueKey?: string;
     devEui: string;
     createdAt: Date;
+    model?: string;
     // Alarmas comunes a ambas tablas
     lowBatteryAlarm: boolean;
     emptyPipeAlarm: boolean;
