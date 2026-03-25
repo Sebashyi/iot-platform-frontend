@@ -546,7 +546,7 @@ export class ConsumptionComponent implements OnInit {
     async loadConsumptionByMonth(): Promise<void> {
         try {
             const data = await firstValueFrom(
-                this.consumptionService.getAllConsumptionByMonth()
+                this.consumptionService.getConsumptionByMonthByCompany(this.companyKey)
             );
             this.consumptions = data.map(item => ({
                 date: new Date(item.dateConsumption),
@@ -573,7 +573,7 @@ export class ConsumptionComponent implements OnInit {
     async loadConsumptionByYear(): Promise<void> {
         try {
             const data = await firstValueFrom(
-                this.consumptionService.getAllConsumptionByYear()
+                this.consumptionService.getConsumptionByYearByCompany(this.companyKey)
             );
             this.consumptions = data.map(item => ({
                 date: new Date(item.dateConsumption),

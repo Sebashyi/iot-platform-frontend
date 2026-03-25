@@ -75,4 +75,12 @@ export class ConsumptionService {
     getConsumptionByHourByCompany(companyUniqueKey: string): Observable<any[]> {
         return this.http.get<any[]>(`${this.baseUrl}/consumption-hour/by-company/${companyUniqueKey}`);
     }
+
+    getConsumptionByMonthByCompany(companyUniqueKey: string): Observable<any[]> {
+        return this.http.get<any[]>(`${this.baseUrl}/consumption-month/by-company/${companyUniqueKey}`);
+    }
+
+    getConsumptionByYearByCompany(companyUniqueKey: string): Observable<any[]> {
+        return this.http.get<any[]>(`${this.baseUrl}/consumption-year/by-company/${companyUniqueKey}`);
+    }
 }
