@@ -132,6 +132,10 @@ export class ConsumptionComponent implements OnInit {
         this.location.back();
     }
 
+    onGlobalFilter(table: any, event: Event) {
+        table.filterGlobal((event.target as HTMLInputElement).value, 'contains');
+    }
+
     updateChart(): void {
         if (this.endDate) {
             this.compareEndDate = new Date(this.endDate);
@@ -153,7 +157,7 @@ export class ConsumptionComponent implements OnInit {
 
     async getConsumptionForHours(): Promise<void> {
         await this.loadConsumptionByHour();
-        
+
         if (!this.startDate || !this.endDate) {
             const now = new Date();
             this.startDate = new Date(now.setHours(now.getHours() - 24));
@@ -173,7 +177,7 @@ export class ConsumptionComponent implements OnInit {
 
             const matchesModel = !this.selectedModel?.name || item.model === this.selectedModel.name;
             const matchesDiameter = !this.selectedDiameter?.name || item.diameter === this.selectedDiameter.code;
-            console.log("endatedate: ",this.endDate, '|',"stardate: ", this.startDate,'|',"itemdate: ", itemDate);
+            console.log("endatedate: ", this.endDate, '|', "stardate: ", this.startDate, '|', "itemdate: ", itemDate);
             return isInDateRange && matchesModel && matchesDiameter;
         });
 
@@ -294,25 +298,25 @@ export class ConsumptionComponent implements OnInit {
 
         this.filteredData = this.consumptions.filter(item => {
             const itemDate = new Date(item.date);
-            
+
             const itemMonth = itemDate.getMonth();
             const itemYear = itemDate.getFullYear();
-            
+
             const startMonth = this.startDate.getMonth();
             const startYear = this.startDate.getFullYear();
-            
+
             const endMonth = this.endDate.getMonth();
             const endYear = this.endDate.getFullYear();
-            
+
             const itemIndex = itemYear * 12 + itemMonth;
             const startIndex = startYear * 12 + startMonth;
             const endIndex = endYear * 12 + endMonth;
-            
+
             const isInMonthRange = itemIndex >= startIndex && itemIndex <= endIndex;
-            
+
             const matchesModel = !this.selectedModel?.name || item.model === this.selectedModel.name;
             const matchesDiameter = !this.selectedDiameter?.name || item.diameter === this.selectedDiameter.code;
-            
+
             return isInMonthRange && matchesModel && matchesDiameter;
         });
 
@@ -354,12 +358,12 @@ export class ConsumptionComponent implements OnInit {
         this.filteredData = this.consumptions.filter(item => {
             const itemDate = new Date(item.date);
             const itemYear = itemDate.getFullYear();
-            
+
             const isInYearRange = itemYear >= startYear && itemYear <= endYear;
-            
+
             const matchesModel = !this.selectedModel?.name || item.model === this.selectedModel.name;
             const matchesDiameter = !this.selectedDiameter?.name || item.diameter === this.selectedDiameter.code;
-            
+
             return isInYearRange && matchesModel && matchesDiameter;
         });
 
