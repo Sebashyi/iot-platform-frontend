@@ -30,7 +30,7 @@ export class RegisterMeterComponent implements OnInit, AfterViewInit {
     selectedBrand: any = null;
     selectedModel: any = null;
     valClassSupport: string = '';
-    comunicationCheck: string[] = [];
+    selectedComunication: string = '';
     typeAutentification: string = '';
     companies: Company[] = [];
     gateways: Gateway[] = [];
@@ -329,7 +329,7 @@ export class RegisterMeterComponent implements OnInit, AfterViewInit {
         if (this.selectedDiameter) {
             this.meter.diameter = this.selectedDiameter.code;
         }
-        this.meter.typeCommunication = this.comunicationCheck.join(', ');
+        this.meter.typeCommunication = this.selectedComunication;
         if (this.selectedCompany) {
             this.meter.companyUniqueKey = this.selectedCompany.uniqueKey;
         }
@@ -417,10 +417,10 @@ export class RegisterMeterComponent implements OnInit, AfterViewInit {
     }
 
     validateRequiredFields(): boolean {
-        if (this.comunicationCheck.includes('LoRaWAN') && !this.meter.devEui) {
+        if (this.selectedComunication === 'LoRaWAN' && !this.meter.devEui) {
             return false;
         }
-        if (this.comunicationCheck.includes('LoRaWAN') && (!this.valClassSupport || !this.selectedRegion || !this.selectedTypeProduct || !this.selectedSubRed)) {
+        if (this.selectedComunication === 'LoRaWAN' && (!this.valClassSupport || !this.selectedRegion || !this.selectedTypeProduct || !this.selectedSubRed)) {
             return false;
         }
         if (this.typeAutentification.includes('OTA') && !this.meter.appKey) {
@@ -429,16 +429,16 @@ export class RegisterMeterComponent implements OnInit, AfterViewInit {
         if (this.typeAutentification.includes('ABP') && (!this.meter.devAddr || !this.meter.appSkey || !this.meter.nwkSkey)) {
             return false;
         }
-        if (this.comunicationCheck.includes('GPRS') && (!this.meter.serial || !this.meter.directionGprs)) {
+        if (this.selectedComunication === 'GPRS' && (!this.meter.serial || !this.meter.directionGprs)) {
             return false;
         }
-        if (this.comunicationCheck.includes('NB-IoT') && !this.meter.imei) {
+        if (this.selectedComunication === 'NB-IoT' && !this.meter.imei) {
             return false;
         }
-        if (this.comunicationCheck.includes('4G') && !this.meter.imei) {
+        if (this.selectedComunication === '4G' && !this.meter.imei) {
             return false;
         }
-        if (this.comunicationCheck.includes('Mbus') && (!this.selectedGateway || !this.meter.serialNumberGprs)) {
+        if (this.selectedComunication === 'Mbus' && (!this.selectedGateway || !this.meter.serialNumberGprs)) {
             return false;
         }
         return true;
