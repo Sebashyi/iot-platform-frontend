@@ -51,11 +51,6 @@
                         (onChange)="loadGatewaysByCompany(selectedCompany.uniqueKey)"></p-dropdown>
                 </div>
                 <div class="field col-12 md:col-4">
-                    <label htmlFor="devEui" class="input-labels">Dev EUI</label>
-                    <input pInputText id="devEui" type="text" [(ngModel)]="meter.devEui"
-                        placeholder="Ingrese un Dev EUI" />
-                </div>
-                <div class="field col-12 md:col-4">
                     <label htmlFor="detail" class="input-labels">Detalle</label>
                     <input pInputText id="detail" type="text" [(ngModel)]="meter.detail" />
                 </div>
@@ -98,40 +93,49 @@
                 <label htmlFor="lastname2" class="input-labels">Comunicación</label>
                 <div class="grid formgrid">
                     <div class="col-12 md:col-4">
-                        <div class="field-checkbox">
-                            <p-checkbox name="group1" value="LoRaWAN" [(ngModel)]="comunicationCheck"
-                                id="lora"></p-checkbox>
-                            <label for="ny">LoRaWAN</label>
+                        <div class="field-radiobutton">
+                            <p-radioButton name="group1" value="LoRaWAN" [(ngModel)]="selectedComunication"
+                                inputId="lora">
+                            </p-radioButton>
+                            <label for="lora">LoRaWAN</label>
                         </div>
                     </div>
+
                     <div class="col-12 md:col-4">
-                        <div class="field-checkbox">
-                            <p-checkbox name="group1" value="GPRS" [(ngModel)]="comunicationCheck"
-                                id="gprs"></p-checkbox>
-                            <label for="sf">GPRS</label>
+                        <div class="field-radiobutton">
+                            <p-radioButton name="group1" value="GPRS" [(ngModel)]="selectedComunication" inputId="gprs">
+                            </p-radioButton>
+                            <label for="gprs">GPRS</label>
                         </div>
                     </div>
+
                     <div class="col-12 md:col-4">
-                        <div class="field-checkbox">
-                            <p-checkbox name="group1" value="NB-IoT" [(ngModel)]="comunicationCheck"
-                                id="nb"></p-checkbox>
-                            <label for="la">NB-IoT</label>
+                        <div class="field-radiobutton">
+                            <p-radioButton name="group1" value="4G" [(ngModel)]="selectedComunication" inputId="4g">
+                            </p-radioButton>
+                            <label for="4g">4G</label>
                         </div>
                     </div>
+
                     <div class="col-12 md:col-4">
-                        <div class="field-checkbox">
-                            <p-checkbox name="group1" value="Mbus" [(ngModel)]="comunicationCheck"
-                                id="mbus"></p-checkbox>
-                            <label for="la">Mbus</label>
+                        <div class="field-radiobutton">
+                            <p-radioButton name="group1" value="Mbus" [(ngModel)]="selectedComunication" inputId="mbus">
+                            </p-radioButton>
+                            <label for="mbus">Mbus</label>
                         </div>
                     </div>
                 </div>
             </div>
         </div>
     </div>
-    <div class="col-12" *ngIf="comunicationCheck.includes('LoRaWAN')">
+    <div class="col-12" *ngIf="selectedComunication === 'LoRaWAN'">
         <div class="card">
             <div class="p-fluid p-formgrid grid">
+                <div class="field col-12 md:col-4">
+                    <label htmlFor="devEui" class="input-labels">Dev EUI</label>
+                    <input pInputText id="devEui" type="text" [(ngModel)]="meter.devEui"
+                        placeholder="Ingrese un Dev EUI" />
+                </div>
                 <div class="field col-12 md:col-4">
                     <label htmlFor="firstname2" class="input-labels">Clase de apoyo</label>
                     <div class="grid formgrid">
@@ -216,7 +220,7 @@
             </div>
         </div>
     </div>
-    <div class="col-12" *ngIf="comunicationCheck.includes('GPRS')">
+    <div class="col-12" *ngIf="selectedComunication === 'GPRS'">
         <div class="card">
             <div class="p-fluid p-formgrid grid">
                 <div class="field col-12 md:col-4">
@@ -232,7 +236,7 @@
             </div>
         </div>
     </div>
-    <div class="col-12" *ngIf="comunicationCheck.includes('NB-IoT')">
+    <div class="col-12" *ngIf="selectedComunication === 'NB-IoT'">
         <div class="card">
             <div class="p-fluid p-formgrid grid">
                 <div class="field col-12 md:col-4">
@@ -242,7 +246,7 @@
             </div>
         </div>
     </div>
-    <div class="col-12" *ngIf="comunicationCheck.includes('Mbus')">
+    <div class="col-12" *ngIf="selectedComunication === 'Mbus'">
         <div class="card">
             <div class="p-fluid p-formgrid grid">
                 <div class="field col-12 md:col-4">

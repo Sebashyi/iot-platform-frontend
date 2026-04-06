@@ -27,11 +27,11 @@ export class EditMeterComponent implements OnInit, AfterViewInit {
     selectedCompany: any = null;
     selectedRegion: any = null;
     selectedTypeProduct: any = null;
+    selectedComunication: string = '';
     selectedSubRed: any = null;
     selectedGateway: any = null;
     selectedDiameter: any = null;
     valClassSupport: string = '';
-    comunicationCheck: string[] = [];
     typeAutentification: string = '';
     companies: Company[] = [];
     gateways: Gateway[] = [];
@@ -338,7 +338,7 @@ export class EditMeterComponent implements OnInit, AfterViewInit {
         if (this.selectedDiameter) {
             this.meter.diameter = this.selectedDiameter.code;
         }
-        this.meter.typeCommunication = this.comunicationCheck.join(', ');
+        this.meter.typeCommunication = this.selectedComunication;
         if (this.selectedCompany) {
             this.meter.companyUniqueKey = this.selectedCompany.uniqueKey;
         }
@@ -422,7 +422,7 @@ export class EditMeterComponent implements OnInit, AfterViewInit {
                 this.selectedCompany = this.companies.find(item => item.uniqueKey === this.meter.companyUniqueKey);
                 this.selectedDiameter = this.dropdownItemsDiameter.find(item => item.name === this.meter.diameter);
                 this.selectedState = this.dropdownItemsState.find(item => item.code === this.meter.state.toString());
-                this.comunicationCheck = this.meter.typeCommunication.split(', ');
+                this.selectedComunication = this.meter.typeCommunication;
                 this.selectedRegion = this.dropdownItemsRegion.find(item => item.name === this.meter.region);
                 this.dropdownItemsSubRed = this.selectedRegion
                     ? (this.regionSubredMap[this.selectedRegion.code] ?? [])
