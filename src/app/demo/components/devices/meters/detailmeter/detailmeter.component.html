@@ -246,32 +246,32 @@
                                 <input pInputText id="appKey" type="text" [(ngModel)]="meter.nwkSkey"
                                     placeholder="NWK Key" readonly />
                             </div>
-                            <div class="field col-12 md:col-4" *ngIf="comunicationCheck.includes('GPRS')">
+                            <div class="field col-12 md:col-4" *ngIf="selectedComunication === 'GPRS'">
                                 <label htmlFor="serial" class="input-labels">Número de serie</label>
                                 <input pInputText id="serial" type="text" [(ngModel)]="meter.serial"
                                     placeholder="Numero de serie" readonly />
                             </div>
-                            <div class="field col-12 md:col-4" *ngIf="comunicationCheck.includes('GPRS')">
+                            <div class="field col-12 md:col-4" *ngIf="selectedComunication === 'GPRS'">
                                 <label htmlFor="directionGprs" class="input-labels">Dirección de la placa GPRS</label>
                                 <input pInputText id="directionGprs" type="text" [(ngModel)]="meter.directionGprs"
                                     placeholder="Direccion GPRS" readonly />
                             </div>
-                            <div class="field col-12 md:col-4" *ngIf="comunicationCheck.includes('NB-IoT')">
+                            <div class="field col-12 md:col-4" *ngIf="selectedComunication === 'NB-IoT'">
                                 <label htmlFor="imei" class="input-labels">IMEI</label>
                                 <input pInputText id="imei" type="text" [(ngModel)]="meter.imei" placeholder="IMEI"
                                     readonly />
                             </div>
-                            <div class="field col-12 md:col-4" *ngIf="comunicationCheck.includes('4G')">
+                            <div class="field col-12 md:col-4" *ngIf="selectedComunication === '4G'">
                                 <label htmlFor="imei" class="input-labels">IMEI</label>
                                 <input pInputText id="imei" type="text" [(ngModel)]="meter.imei" placeholder="IMEI"
                                     readonly />
                             </div>
-                            <div class="field col-12 md:col-4" *ngIf="comunicationCheck.includes('Mbus')">
+                            <div class="field col-12 md:col-4" *ngIf="selectedComunication === 'Mbus'">
                                 <label htmlFor="gateway" class="input-labels">Gateway</label>
                                 <input pInputText id="gateway" type="text" placeholder="Nombre del Gateway"
                                     [value]="selectedGateway?.name" readonly />
                             </div>
-                            <div class="field col-12 md:col-4" *ngIf="comunicationCheck.includes('Mbus')">
+                            <div class="field col-12 md:col-4" *ngIf="selectedComunication === 'Mbus'">
                                 <label htmlFor="serialNumberGprs" class="input-labels">Número de serie</label>
                                 <input pInputText id="serialNumberGprs" type="text" [(ngModel)]="meter.serialNumberGprs"
                                     placeholder="Numero de serie" readonly />
