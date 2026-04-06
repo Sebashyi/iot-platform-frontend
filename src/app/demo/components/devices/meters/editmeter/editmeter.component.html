@@ -205,7 +205,7 @@
                 </div>
                 <div class="field col-12 md:col-4" *ngIf="typeAutentification.includes('OTA')">
                     <label htmlFor="lastname2" class="input-labels">App Key</label>
-                    <input pInputText id="appKey" type="text" [(ngModel)]="meter.appKey" placeholder="Ingrese un Key" readonlyw/>
+                    <input pInputText id="appKey" type="text" [(ngModel)]="meter.appKey" placeholder="Ingrese un Key" readonly/>
                 </div>
                 <div class="field col-12 md:col-4" *ngIf="typeAutentification.includes('ABP')">
                     <label htmlFor="devAddr" class="input-labels">DevAddr</label>
@@ -213,13 +213,13 @@
                         placeholder="Ingrese un Dev Addr" />
                 </div>
                 <div class="field col-12 md:col-4" *ngIf="typeAutentification.includes('ABP')">
-                    <label htmlFor="app" class="input-labels">App SKey</label>
-                    <input pInputText id="appKey" type="text" [(ngModel)]="meter.appSkey"
+                    <label htmlFor="appSKey" class="input-labels">App SKey</label>
+                    <input pInputText id="appSKey" type="text" [(ngModel)]="meter.appSkey"
                         placeholder="Ingrese una SKey" />
                 </div>
                 <div class="field col-12 md:col-4" *ngIf="typeAutentification.includes('ABP')">
-                    <label htmlFor="lastname2" class="input-labels">Nwk SKey</label>
-                    <input pInputText id="appKey" type="text" [(ngModel)]="meter.nwkSkey"
+                    <label htmlFor="nwkSKey" class="input-labels">Nwk SKey</label>
+                    <input pInputText id="nwkSKey" type="text" [(ngModel)]="meter.nwkSkey"
                         placeholder="Ingrese un NWK Key" />
                 </div>
             </div>
