@@ -33,7 +33,7 @@ export class DetailMeterComponent implements OnInit {
     selectedSubRed: any = null;
     selectedGateway: any = null;
     valClassSupport: string = '';
-    comunicationCheck: string[] = [];
+    selectedComunication: string = ''; 
     typeAutentification: string = '';
     companies: Company[] = [];
     gateways: Gateway[] = [];
@@ -326,7 +326,7 @@ export class DetailMeterComponent implements OnInit {
 
             this.selectedCompany = this.companies.find(item => item.uniqueKey === this.meter.companyUniqueKey);
             this.selectedState = this.dropdownItemsState.find(item => item.code === this.meter.state.toString());
-            this.comunicationCheck = this.meter.typeCommunication.split(', ');
+            this.selectedComunication = this.meter.typeCommunication;
             this.selectedRegion = this.dropdownItemsRegion.find(item => item.name === this.meter.region);
             this.dropdownItemsSubRed = this.selectedRegion
                 ? (this.regionSubredMap[this.selectedRegion.code] ?? [])

@@ -338,6 +338,7 @@ export class EditMeterComponent implements OnInit, AfterViewInit {
         if (this.selectedDiameter) {
             this.meter.diameter = this.selectedDiameter.code;
         }
+        
         this.meter.typeCommunication = this.selectedComunication;
         if (this.selectedCompany) {
             this.meter.companyUniqueKey = this.selectedCompany.uniqueKey;
