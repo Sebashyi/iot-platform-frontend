@@ -661,6 +661,7 @@ export class DetailMeterComponent implements OnInit {
                 if (brandData === 'Bove') {
                     this.messagesService.getMessageDecodedBove(this.meter.devEui).subscribe({
                         next: data => {
+                            console.log('Mensajes decodificados de Bove:', data);
                             this.messages = data
                                 .filter(messageDecoded => messageDecoded.typeMessage === 'Uplink' || messageDecoded.typeMessage === 'Downlink')
                                 .map(messageDecoded => {
