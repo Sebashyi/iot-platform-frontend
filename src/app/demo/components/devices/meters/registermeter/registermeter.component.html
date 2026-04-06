@@ -228,7 +228,7 @@
             </div>
         </div>
     </div>
-    <div class="col-12" *ngIf="selectedComunication === 'GPRS'"">
+    <div class="col-12" *ngIf="selectedComunication === 'GPRS'">
         <div class="card">
             <div class="p-fluid p-formgrid grid">
                 <div class="field col-12 md:col-4">
@@ -262,7 +262,7 @@
                     <p-dropdown [options]="gateways" optionLabel="name" [(ngModel)]="selectedGateway" id="countrySelect"
                         placeholder="Seleccione un Gateway"></p-dropdown>
                 </div>
-                <div class="field col-12 md:col-4" *ngIf="!comunicationCheck.includes('GPRS')">
+                <div class="field col-12 md:col-4" *ngIf="selectedComunication !== 'GPRS'">
                     <label htmlFor="serialNumberGprs" class="input-labels">Número de serie</label>
                     <input pInputText id="serialNumberGprs" type="text" [(ngModel)]="meter.serialNumberGprs"
                         placeholder="Ingrese el numero de serie" />
