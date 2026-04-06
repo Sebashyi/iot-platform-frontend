@@ -66,7 +66,7 @@ export class UserComponent implements OnInit {
                 this.fetchUsersDetails(userIds);
             },
             error: () => {
-                this.messageService.add({ severity: 'error', summary: 'Error', detail: 'No se pudo obtener la relación de usuarios y compañías', life: 3000 });
+                this.messageService.add({ severity: 'error', summary: 'Error', detail: 'No se pudo obtener la relación de usuarios y empresa', life: 3000 });
             }
         });
     }

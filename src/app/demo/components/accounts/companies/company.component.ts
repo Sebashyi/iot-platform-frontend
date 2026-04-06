@@ -57,7 +57,7 @@ export class CompanyComponent implements OnInit {
                 this.fetchCompaniesDetails(companiesIds);
             },
             error: () => {
-                this.messageService.add({ severity: 'error', summary: 'Error', detail: 'No se pudo obtener la relación de usuario y compañías', life: 3000 });
+                this.messageService.add({ severity: 'error', summary: 'Error', detail: 'No se pudo obtener la relación de usuario y empresa', life: 3000 });
             }
         });
     }

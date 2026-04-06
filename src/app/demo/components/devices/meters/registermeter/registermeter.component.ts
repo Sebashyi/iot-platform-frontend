@@ -386,22 +386,12 @@ export class RegisterMeterComponent implements OnInit, AfterViewInit {
                 this.companies = data;
             },
             error: (error) => {
-                console.error('Error al obtener las compañías', error);
-                this.messageService.add({ severity: 'error', summary: 'Error', detail: 'No se pudieron obtener las compañías.' });
+                console.error('Error al obtener las empresas', error);
+                this.messageService.add({ severity: 'error', summary: 'Error', detail: 'No se pudieron obtener las empresas.' });
             }
         });
 
         this.loadGatewaysByCompany();
-
-        this.meterService.getMetersByCompany(this.companyKey).subscribe({
-            next: (data) => {
-                this.meters = data;
-            },
-            error: (error) => {
-                console.error('Error al obtener los medidores', error);
-                this.messageService.add({ severity: 'error', summary: 'Error', detail: 'No se pudieron obtener los medidores.' });
-            }
-        });
     }
 
     loadGatewaysByCompany(): void {

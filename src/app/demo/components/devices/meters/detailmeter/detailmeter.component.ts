@@ -288,7 +288,7 @@ export class DetailMeterComponent implements OnInit {
                 }
             },
             error: error => {
-                this.messageService.add({ severity: 'error', summary: 'Error', detail: 'No se pudo cargar las compañías.', life: 3000 });
+                this.messageService.add({ severity: 'error', summary: 'Error', detail: 'No se pudo cargar las empresas.', life: 3000 });
             }
         });
 

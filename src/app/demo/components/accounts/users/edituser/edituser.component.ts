@@ -101,7 +101,7 @@ export class EditUserComponent implements OnInit {
                 this.selectedMulti = this.companies.filter(company => 
                     userCompanyKeys.includes(company.uniqueKey)
                 );
-                console.log("Compañías seleccionadas:", this.selectedMulti);
+                console.log("Empresas seleccionadas:", this.selectedMulti);
             },
             error: (error) => {
                 console.error('Error al cargar empresas del usuario:', error);

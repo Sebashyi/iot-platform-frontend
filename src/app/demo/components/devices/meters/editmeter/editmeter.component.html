@@ -134,7 +134,7 @@
                 <div class="field col-12 md:col-4">
                     <label htmlFor="devEui" class="input-labels">Dev EUI</label>
                     <input pInputText id="devEui" type="text" [(ngModel)]="meter.devEui"
-                        placeholder="Ingrese un Dev EUI" />
+                        placeholder="Ingrese un Dev EUI" readonly/>
                 </div>
                 <div class="field col-12 md:col-4">
                     <label htmlFor="firstname2" class="input-labels">Clase de apoyo</label>
@@ -180,6 +180,11 @@
                         id="subRedSelect" placeholder="Seleccione una sub-red"></p-dropdown>
                 </div>
                 <div class="field col-12 md:col-4">
+                    <label htmlFor="appEui" class="input-labels">Aplicación EUI</label>
+                    <input pInputText id="appEui" type="text" [(ngModel)]="meter.euiAplication"
+                        placeholder="Ingrese un App EUI" readonly/>
+                </div>
+                <div class="field col-12 md:col-4">
                     <label htmlFor="firstname2" class="input-labels">Tipo de autenticación</label>
                     <div class="grid formgrid">
                         <div class="col-12 md:col-4">
@@ -200,7 +205,7 @@
                 </div>
                 <div class="field col-12 md:col-4" *ngIf="typeAutentification.includes('OTA')">
                     <label htmlFor="lastname2" class="input-labels">App Key</label>
-                    <input pInputText id="appKey" type="text" [(ngModel)]="meter.appKey" placeholder="Ingrese un Key" />
+                    <input pInputText id="appKey" type="text" [(ngModel)]="meter.appKey" placeholder="Ingrese un Key" readonlyw/>
                 </div>
                 <div class="field col-12 md:col-4" *ngIf="typeAutentification.includes('ABP')">
                     <label htmlFor="devAddr" class="input-labels">DevAddr</label>
