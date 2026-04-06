@@ -661,7 +661,6 @@ export class DetailMeterComponent implements OnInit {
                 if (brandData === 'Bove') {
                     this.messagesService.getMessageDecodedBove(this.meter.devEui).subscribe({
                         next: data => {
-                            console.log('Mensajes decodificados de Bove:', data);
                             this.messages = data
                                 .filter(messageDecoded => messageDecoded.typeMessage === 'Uplink' || messageDecoded.typeMessage === 'Downlink')
                                 .map(messageDecoded => {
@@ -673,12 +672,21 @@ export class DetailMeterComponent implements OnInit {
                             this.loading = false;
                         },
                         error: error => {
-                            this.messageService.add({
-                                severity: 'error',
-                                summary: 'Error',
-                                detail: 'No se pudo cargar los mensajes de Bove.',
-                                life: 3000
-                            });
+                            if (error?.status === 404 || error?.error?.status === 404 || error?.message?.includes('404')) {
+                                this.messageService.add({
+                                    severity: 'warn',
+                                    summary: 'Sin mensajes',
+                                    detail: 'No existen mensajes de Bove para este medidor.',
+                                    life: 3000
+                                });
+                            } else {
+                                this.messageService.add({
+                                    severity: 'error',
+                                    summary: 'Error',
+                                    detail: 'No se pudo cargar los mensajes de Bove.',
+                                    life: 3000
+                                });
+                            }
                             this.loading = false;
                         }
                     });
@@ -742,8 +750,14 @@ export class DetailMeterComponent implements OnInit {
                 consumption: item.hourlyConsumption
             }));
         } catch (error) {
-            if (this.isNotFoundError(error)) {
+            if (this.isNotFoundError?.(error)) {
                 this.consumptions = [];
+                this.messageService.add({
+                    severity: 'warn',
+                    summary: 'Sin datos',
+                    detail: 'No existen consumos por hora para este medidor.',
+                    life: 3000
+                });
             } else {
                 this.messageService.add({
                     severity: 'error',
@@ -767,8 +781,14 @@ export class DetailMeterComponent implements OnInit {
             }));
 
         } catch (error) {
-            if (this.isNotFoundError(error)) {
+            if (this.isNotFoundError?.(error)) {
                 this.consumptions = [];
+                this.messageService.add({
+                    severity: 'warn',
+                    summary: 'Sin datos',
+                    detail: 'No existen consumos por día para este medidor.',
+                    life: 3000
+                });
             } else {
                 this.messageService.add({
                     severity: 'error',
@@ -791,13 +811,19 @@ export class DetailMeterComponent implements OnInit {
             }));
 
         } catch (error) {
-            if (this.isNotFoundError(error)) {
+            if (this.isNotFoundError?.(error)) {
                 this.consumptions = [];
+                this.messageService.add({
+                    severity: 'warn',
+                    summary: 'Sin datos',
+                    detail: 'No existen consumos por mes para este medidor.',
+                    life: 3000
+                });
             } else {
                 this.messageService.add({
                     severity: 'error',
                     summary: 'Error',
-                    detail: 'No se pudo cargar los consumos por por meses.',
+                    detail: 'No se pudo cargar los consumos por mes.',
                     life: 3000
                 });
             }
@@ -815,13 +841,19 @@ export class DetailMeterComponent implements OnInit {
             }));
 
         } catch (error) {
-            if (this.isNotFoundError(error)) {
+            if (this.isNotFoundError?.(error)) {
                 this.consumptions = [];
+                this.messageService.add({
+                    severity: 'warn',
+                    summary: 'Sin datos',
+                    detail: 'No existen consumos por año para este medidor.',
+                    life: 3000
+                });
             } else {
                 this.messageService.add({
                     severity: 'error',
                     summary: 'Error',
-                    detail: 'No se pudo cargar los consumos por por años.',
+                    detail: 'No se pudo cargar los consumos por año.',
                     life: 3000
                 });
             }
