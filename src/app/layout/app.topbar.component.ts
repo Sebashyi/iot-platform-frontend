@@ -50,7 +50,6 @@ export class AppTopBarComponent implements OnInit {
     loadUserCompanies(userId: string) {
         this.userCompanyService.getUserCompanies(userId).subscribe({
             next: (userCompanies) => {
-                // ✅ Eliminar duplicados usando Set
                 let companyIds = [...new Set(userCompanies
                     .map((uc: any) => uc.companyUniqueKey)
                     .filter((id: string) => id?.trim()))];
