@@ -112,6 +112,7 @@ export class DetailMeterComponent implements OnInit {
         { name: 'Zigbee', code: 'ZIG' }
     ];
     dropdownItemsSubRed: { name: string; code: string }[] = [];
+    activeTabIndex: number = 0;
 
     private readonly regionSubredMap: { [key: string]: { name: string; code: string }[] } = {
         'CN470': [
