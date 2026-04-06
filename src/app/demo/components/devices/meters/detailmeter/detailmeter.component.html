@@ -164,7 +164,7 @@
                                 </div>
                             </div>
 
-                            <div class="field col-12 md:col-4" *ngIf="comunicationCheck.includes('LoRaWAN')">
+                            <div class="field col-12 md:col-4" *ngIf="selectedComunication === 'LoRaWAN'">
                                 <label htmlFor="firstname2" class="input-labels">Clase de apoyo</label>
                                 <div class="grid formgrid">
                                     <div class="col-12 md:col-4">
@@ -190,22 +190,22 @@
                                     </div>
                                 </div>
                             </div>
-                            <div class="field col-12 md:col-4" *ngIf="comunicationCheck.includes('LoRaWAN')">
+                            <div class="field col-12 md:col-4" *ngIf="selectedComunication === 'LoRaWAN'">
                                 <label htmlFor="region" class="input-labels">Region</label>
                                 <input pInputText id="region" type="text" [value]="selectedRegion?.name || ''"
                                     placeholder="Region" readonly />
                             </div>
-                            <div class="field col-12 md:col-4" *ngIf="comunicationCheck.includes('LoRaWAN')">
+                            <div class="field col-12 md:col-4" *ngIf="selectedComunication === 'LoRaWAN'">
                                 <label htmlFor="typeProduct" class="input-labels">Tipo de Producto</label>
                                 <input pInputText id="typeProduct" type="text" [value]="selectedTypeProduct?.name || ''"
                                     placeholder="Tipo de Producto" readonly />
                             </div>
-                            <div class="field col-12 md:col-4" *ngIf="comunicationCheck.includes('LoRaWAN')">
+                            <div class="field col-12 md:col-4" *ngIf="selectedComunication === 'LoRaWAN'">
                                 <label htmlFor="subred" class="input-labels">Subred</label>
                                 <input pInputText id="subRed" type="text" [value]="selectedSubRed?.name || ''"
                                     placeholder="Sub Red" readonly />
                             </div>
-                            <div class="field col-12 md:col-4" *ngIf="comunicationCheck.includes('LoRaWAN')">
+                            <div class="field col-12 md:col-4" *ngIf="selectedComunication === 'LoRaWAN'">
                                 <label htmlFor="firstname2" class="input-labels">Tipo de autenticación</label>
                                 <div class="grid formgrid">
                                     <div class="col-12 md:col-4">
