@@ -191,6 +191,11 @@
                                 </div>
                             </div>
                             <div class="field col-12 md:col-4" *ngIf="selectedComunication === 'LoRaWAN'">
+                                <label htmlFor="devEui" class="input-labels">Dev EUI</label>
+                                <input pInputText id="devEui" type="text" [(ngModel)]="meter.devEui"
+                                    placeholder="Ingrese un Dev EUI" readonly />
+                            </div>
+                            <div class="field col-12 md:col-4" *ngIf="selectedComunication === 'LoRaWAN'">
                                 <label htmlFor="region" class="input-labels">Region</label>
                                 <input pInputText id="region" type="text" [value]="selectedRegion?.name || ''"
                                     placeholder="Region" readonly />
@@ -204,6 +209,11 @@
                                 <label htmlFor="subred" class="input-labels">Subred</label>
                                 <input pInputText id="subRed" type="text" [value]="selectedSubRed?.name || ''"
                                     placeholder="Sub Red" readonly />
+                            </div>
+                            <div class="field col-12 md:col-4" *ngIf="selectedComunication === 'LoRaWAN'">
+                                <label htmlFor="appEui" class="input-labels">Aplicación EUI</label>
+                                <input pInputText id="appEui" type="text" [(ngModel)]="meter.euiAplication"
+                                    placeholder="Ingrese un App EUI" readonly />
                             </div>
                             <div class="field col-12 md:col-4" *ngIf="selectedComunication === 'LoRaWAN'">
                                 <label htmlFor="firstname2" class="input-labels">Tipo de autenticación</label>
@@ -237,13 +247,13 @@
                                     placeholder="Dev Addr" readonly />
                             </div>
                             <div class="field col-12 md:col-4" *ngIf="typeAutentification.includes('ABP')">
-                                <label htmlFor="app" class="input-labels">App SKey</label>
-                                <input pInputText id="appKey" type="text" [(ngModel)]="meter.appSkey" placeholder="SKey"
+                                <label htmlFor="appSKey" class="input-labels">App SKey</label>
+                                <input pInputText id="appSKey" type="text" [(ngModel)]="meter.appSkey" placeholder="SKey"
                                     readonly />
                             </div>
                             <div class="field col-12 md:col-4" *ngIf="typeAutentification.includes('ABP')">
-                                <label htmlFor="lastname2" class="input-labels">Nwk SKey</label>
-                                <input pInputText id="appKey" type="text" [(ngModel)]="meter.nwkSkey"
+                                <label htmlFor="nwkSKey" class="input-labels">Nwk SKey</label>
+                                <input pInputText id="nwkSKey" type="text" [(ngModel)]="meter.nwkSkey"
                                     placeholder="NWK Key" readonly />
                             </div>
                             <div class="field col-12 md:col-4" *ngIf="selectedComunication === 'GPRS'">
